@@ -9,12 +9,15 @@ import Script from "next/script";
 export default function BrokenImages() {
     //Return Images in a random order and with two of them with broken src path
     const imagesSrc  = [
-        { index: 1, value: "color_test.jpg" },
-        { index: 2, value: "web_optimized.jpg"},
+        { index: 1, value: "BalloonsAtBasin.png" },
+        { index: 2, value: "Italy-2.jpg"},
         { index: 3, value: "sun.svg"},
-        { index: 4, value: "color_test.jpg" },
-        { index: 5, value: "web_optimized.jpg"},
-        { index: 6, value: "sun.svg"}]
+        { index: 4, value: "Queenstown-2.png" },
+        { index: 5, value: "Rome-2.jpg"},
+        { index: 6, value: "SnowGhosts-2.jpg"},
+        { index: 7, value: "St Pierre Cathedral.jpg"},
+        { index: 8, value: "Wanaka-2.jpg"}]
+
     //Suffle the array and then pick the first two elements
     shuffle(imagesSrc)
     imagesSrc[0].value = "randon.png"
