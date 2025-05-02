@@ -10,7 +10,9 @@ export default function HamburgerMenu() {
   return (
     
     <div id="hamburgerMenu">
-        <div onClick={menuClick} >
+        <div 
+        onClick={menuClick}     
+        >
             <Image
                 src="/hamburger.svg"
                 alt="menu"
@@ -20,19 +22,28 @@ export default function HamburgerMenu() {
         </div>
         <div    id="hamburgerMenuItems" 
                 className="grid row-start-1 col-start-1 justify-items-start text-stone-200 bg-stone-900 m-2 min-w-[200px] max-w[300px] 
-                gap-2 shadow-lg shadow-[rgb(200,128,49)] invisible"
+                gap-2 shadow-lg shadow-[rgb(200,128,49)] hidden"
                 onClick={menuClick}>
-            <div className="hamburgerMenuItem ">
+            <div>
                  <Link href='/'>Home</Link>
             </div>
             <div>
                 <Link href='/register'>Register</Link>
             </div>
             <div>
-                <Link href='/test'>Test</Link>
+                <Link href='/public/broken-links'>Broken links</Link>
             </div>
             <div>
-                menu item 4
+                <Link href='/public/radio-buttons'>Radio buttons</Link>
+            </div>
+            <div>
+                <Link href='/public/tables'>Tables</Link>
+            </div>
+            <div>
+                <Link href='/public/tables'>Todo</Link>
+            </div>
+            <div>
+                <Link href='/public/tables'>Todo2</Link>
             </div>
         </div>
     </div>
@@ -40,15 +51,8 @@ export default function HamburgerMenu() {
 };
 
 function menuClick() {
+    
     var currentState = document.getElementById('hamburgerMenuItems')
-    if(currentState?.checkVisibility({visibilityProperty: true}) === true) {
-        currentState?.classList.remove('visible')
-        currentState?.classList.add('invisible')
-        
-    }
-    else {
-        currentState?.classList.remove('invisible')
-        currentState?.classList.add('visible')
-    }
+    currentState?.classList.toggle('hidden')
 
   }
