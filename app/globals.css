@@ -78,6 +78,11 @@ p {
   font-size: 1.0em;
 }
 
+.errorMessage p {
+  color: red;
+  font-size: 1.0em;
+}
+
 a {
   color: rgb(164, 165, 164);
   font-size: 1.0em;
