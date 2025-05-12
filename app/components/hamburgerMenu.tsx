@@ -37,7 +37,7 @@ export default function HamburgerMenu() {
                 <Link href='/public/radio-buttons'>Radio buttons</Link>
             </div>
             <div>
-                <Link href='/public/tables'>Tables</Link>
+                <Link href='/public/checkbox'>Checkboxes</Link>
             </div>
             <div>
                 <Link href='/public/tables'>Todo</Link>
