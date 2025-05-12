@@ -1,0 +1,41 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: hawes-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hawes-app
+    spec:
+      containers:
+      - name: hawes-app
+        image: hawes-app-image
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "1000Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 10
+          peroidSeconds: 10
+  selector:
+    matchLabels:
+      app: hawes-app
+---
+apiVersion: v1
+kind: Service
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 3000
+      tergetPort: 3000
+  selector:
+    app: hawes-app
