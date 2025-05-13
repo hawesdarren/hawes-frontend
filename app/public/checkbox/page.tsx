@@ -198,7 +198,7 @@ export default function Page(this: any) {
     return (
     <div className="grid grid-cols-[1fr_8fr_1fr] sm:grid-cols-[1fr_2fr_1fr] p-6 gap-3 ">
       <div className="grid col-start-1 col-span-3">
-        <p>The challange is to use the checkboxes</p>
+        <p>The challenge is to use the checkboxes</p>
       </div>
       <div className="grid col-start-2">
         <h2>Single checkbox</h2>
