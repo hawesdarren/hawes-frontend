@@ -31,11 +31,13 @@ spec:
 ---
 apiVersion: v1
 kind: Service
+metadata:
+  name: hawes-app-service
 spec:
   type: ClusterIP
   ports:
     - name: http
       port: 3000
-      tergetPort: 3000
+      targetPort: 3000
   selector:
     app: hawes-app
