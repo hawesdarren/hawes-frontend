@@ -24,7 +24,7 @@ spec:
             path: /
             port: 3000
           initialDelaySeconds: 10
-          peroidSeconds: 10
+          periodSeconds: 10
   selector:
     matchLabels:
       app: hawes-app
