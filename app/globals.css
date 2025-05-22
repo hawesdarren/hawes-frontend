@@ -41,6 +41,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-text: rgb(164, 165, 164);
+  --color-shadow: rgb(200, 128, 49);
+  --shadow: 0 4px 10px 0 var(--color-shadow)
 }
 
 input {
@@ -56,25 +59,77 @@ button {
   text-align: center;
   color: white;
   cursor: pointer;
-  border-radius:4px;
-  box-shadow: 0 6px 12px 0 rgb(200, 128, 49);
+  border-radius:var(--radius-sm);
+  /*box-shadow: 0 4px 10px 0 rgb(200, 128, 49);*/
+  box-shadow: var(--shadow);
   
 }
 
+.accordion button {
+
+  background-color: transparent;
+  text-align: center;
+  color: var(--color-text);
+  cursor: pointer;
+  border-radius:var(--radius-sm);
+  box-shadow: none;
+  
+}
+
+.accordion {
+
+  background-color: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+    
+}
+
+.tab {
+  background-color: transparent;
+  
+}
+
+.tab button {
+  background-color: transparent;
+  box-shadow: none;
+  border-radius: 0%;
+  text-align: left;
+  color: var(--color-text)
+
+}
+
+
 h1 {
-  color: rgb(164, 165, 164);
+  color: var(--color-text);
   font-size: 1.5em;
   font-weight: bold;
 }
 
 h2 {
-  color: rgb(164, 165, 164);
+  color: var(--color-text);
   font-size: 1.3em;
   font-weight: bold;
 }
 
+h3 {
+  color: var(--color-text);
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+h4 {
+  color: var(--color-text);
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
 p {
-  color: rgb(164, 165, 164);
+  color: var(--color-text);
+  font-size: 1.0em;
+}
+
+li {
+  color: var(--color-text);
   font-size: 1.0em;
 }
 
@@ -86,7 +141,15 @@ p {
 a {
   color: rgb(164, 165, 164);
   font-size: 1.0em;
+
 }
+
+a:hover {
+  color: rgb(164, 165, 164);
+  font-size: 1.0em;
+  font-weight: bolder;
+}
+
 
 label {
   color: rgb(164, 165, 164);

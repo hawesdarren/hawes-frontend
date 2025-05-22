@@ -15,7 +15,7 @@ export default function Page(this: any) {
 
 <div className="grid grid-cols-[1fr_8fr_1fr] sm:grid-cols-[1fr_1fr_1fr] p-6 gap-3 ">
       <div className="grid col-start-1 col-span-3">
-        <p>The challange is to use the radio buttons</p>
+        <p>The challenge is to use the radio buttons</p>
       </div>
       
       <div className="valueChange grid col-start-2 place-items-start">

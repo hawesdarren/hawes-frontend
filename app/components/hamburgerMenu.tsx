@@ -31,6 +31,9 @@ export default function HamburgerMenu() {
                 <Link href='/register'>Register</Link>
             </div>
             <div>
+                <Link href='/public/accordion'>Accordion</Link>
+            </div>
+            <div>
                 <Link href='/public/broken-links'>Broken links</Link>
             </div>
             <div>
