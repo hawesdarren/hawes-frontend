@@ -20,8 +20,8 @@ export default function BrokenImages() {
 
     //Suffle the array and then pick the first two elements
     shuffle(imagesSrc)
-    imagesSrc[0].value = "randon.png"
-    imagesSrc[1].value = "randon.jpg"
+    imagesSrc[0].value = "random.png"
+    imagesSrc[1].value = "random.jpg"
     shuffle(imagesSrc)
      return (
         <div className="flex flex-row flex-wrap gap-2">

@@ -41,95 +41,93 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-text: rgb(164, 165, 164);
   --color-shadow: rgb(200, 128, 49);
   --shadow: 0 4px 10px 0 var(--color-shadow)
 }
 
-input {
+/*input {
   border-width: 1;
   border-color: grey;
   background-color: white;
   border-radius: 4px;
-}
+}*/
 
-button {
+/*button {
 
   background-color: grey;
   text-align: center;
   color: white;
   cursor: pointer;
   border-radius:var(--radius-sm);
-  /*box-shadow: 0 4px 10px 0 rgb(200, 128, 49);*/
   box-shadow: var(--shadow);
   
-}
+}*/
 
-.accordion button {
+/*.accordion button {
 
   background-color: transparent;
   text-align: center;
-  color: var(--color-text);
+  color: var(--text-color);
   cursor: pointer;
   border-radius:var(--radius-sm);
   box-shadow: none;
   
-}
+}*/
 
-.accordion {
+/*.accordion {
 
   background-color: transparent;
-  color: var(--color-text);
+  color: var(--text-color);
   cursor: pointer;
     
-}
+}*/
 
-.tab {
+/*.tab {
   background-color: transparent;
   
-}
+}*/
 
-.tab button {
+/*.tab button {
   background-color: transparent;
   box-shadow: none;
   border-radius: 0%;
   text-align: left;
-  color: var(--color-text)
+  color: var(--text-color)
 
-}
+}*/
 
 
 h1 {
-  color: var(--color-text);
+  color: var(--text-color);
   font-size: 1.5em;
   font-weight: bold;
 }
 
 h2 {
-  color: var(--color-text);
+  color: var(--text-color);
   font-size: 1.3em;
   font-weight: bold;
 }
 
 h3 {
-  color: var(--color-text);
+  color: var(--text-color);
   font-size: 1.2em;
   font-weight: bold;
 }
 
 h4 {
-  color: var(--color-text);
+  color: var(--text-color);
   font-size: 1.1em;
   font-weight: bold;
 }
 
 p {
-  color: var(--color-text);
+  color: var(--text-color);
   font-size: 1.0em;
 }
 
 li {
-  color: var(--color-text);
+  color: var(--text-color);
   font-size: 1.0em;
 }
 
@@ -139,20 +137,20 @@ li {
 }
 
 a {
-  color: rgb(164, 165, 164);
+  color: var(--text-color);
   font-size: 1.0em;
 
 }
 
 a:hover {
-  color: rgb(164, 165, 164);
+  color: var(--text-color);
   font-size: 1.0em;
   font-weight: bolder;
 }
 
 
 label {
-  color: rgb(164, 165, 164);
+  color: var(--text-color);
   font-size: 1.0em;
 }
 
@@ -189,6 +187,7 @@ label {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --text-color: oklch(0.3783 0.0173 45.53)
 }
 
 .dark {
@@ -223,6 +222,7 @@ label {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --text-color: oklch(0.84 0.0173 45.53)
 }
 
 @layer base {

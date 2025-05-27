@@ -6,6 +6,7 @@ import { JSX, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 
 
+
 export default function Page(this: any) {
 
     const options: readonly string[] = ['Option 1','Option 2','Option 3','Option 4','Option 5', ]
@@ -23,7 +24,8 @@ export default function Page(this: any) {
         for(i; i < elements.length; i++){
             var isChecked = elements[i].ariaChecked
             if(isChecked === 'true'){
-                console.log('in is checked if statement')
+                //If checked, get the label text
+                //Get the id of the element
                 var id = elements[i].id
                 var option = document.querySelector(`label[for="${id}"]`)
                 strResult = strResult + `${option?.textContent}\n`
@@ -65,7 +67,6 @@ export default function Page(this: any) {
             var newArray = Array(optionsAll.length).fill(value)
             setIsCheckedAll((isCheckedAll: (string|boolean)[]) =>{
                 isCheckedAll = newArray
-                console.log(`in set all, setting to ${isCheckedAll}`)
                 return isCheckedAll
             })
         }
@@ -107,7 +108,8 @@ export default function Page(this: any) {
     }
     
     function anyTwoResult(){
-        var elements = document.getElementsByClassName('anyTwo');
+        //var elements = document.getElementsByClassName('anyTwo');
+        var elements = document.getElementsByName('anyTwo');
         var strResult = 'Selected options: \n'
         //Loop through the elements, add options to result string if set to true
         var i:number = 0;
@@ -127,8 +129,6 @@ export default function Page(this: any) {
         // Check if all option are true
         var newArray = Array(optionsAll.length).fill(true)
         if(JSON.stringify(isCheckedAll) === JSON.stringify(newArray)){
-            console.log(`newArray: ${newArray}`)
-            console.log(`isCheckedAll: ${isCheckedAll}`)
             strResult = strResult + 'All options selected'
             document.getElementById('onCheckAllMessage')!.innerText = strResult
             document.getElementById('onCheckAllMessage')?.parentElement?.setAttribute('class', '')
@@ -148,7 +148,7 @@ export default function Page(this: any) {
         return (<div className="flex flex-row gap-3 m-3" key={id}>
             <Checkbox 
                 id={strId}
-                className='anyTwo'
+                name='anyTwo'
                 checked={isChecked[id]}
                 value={isChecked[id]}
                 onCheckedChange={checked => onAnyTwoChange(checked, id)}
