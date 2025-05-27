@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Head from "next/head";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+//import "./checkbox_styles.css"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,11 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-wdth, initial-scale=1.0" />
       </Head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="grid grid-cols-1 w-dvw max-w-200 min-h-dvh bg-black text-white justify-self-center">
+        {/*
+        Uncomment the following line to use a fixed width container
+        <div className="grid grid-cols-1 w-dvw max-w-200 min-h-dvh bg-black text-white justify-self-center"></div>
+        */}
+        <div className="grid grid-cols-1 w-dvw max-w-200 min-h-dvh justify-self-center">
           {children}
         </div>
 
