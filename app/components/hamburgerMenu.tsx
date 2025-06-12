@@ -3,13 +3,12 @@
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import Link from 'next/link';
-import Script from "next/script";
 import DarkMode from "./darkModeSelector";
 
 export default function HamburgerMenu() {
 
     const menuItems = [
-        //{ name: 'Home', href: '/' },
+
         { name: 'Register', href: '/register' },
         { name: 'Accordion', href: '/public/accordion' },
         { name: 'Broken links', href: '/public/broken-links' },
