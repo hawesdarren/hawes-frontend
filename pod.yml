@@ -1,4 +1,4 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hawes-app
@@ -24,18 +24,20 @@ spec:
             path: /
             port: 3000
           initialDelaySeconds: 10
-          peroidSeconds: 10
+          periodSeconds: 10
   selector:
     matchLabels:
       app: hawes-app
 ---
 apiVersion: v1
 kind: Service
+metadata:
+  name: hawes-app-service
 spec:
   type: ClusterIP
   ports:
     - name: http
       port: 3000
-      tergetPort: 3000
+      targetPort: 3000
   selector:
     app: hawes-app
