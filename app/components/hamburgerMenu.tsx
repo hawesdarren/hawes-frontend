@@ -1,75 +1,96 @@
 "use client";
 
-
-import Link from 'next/link';
-import { Collapsible , CollapsibleTrigger, CollapsibleContent} from "@/components/ui/collapsible"
 import Image from "next/image";
-import { useState } from 'react';
+import { useEffect, useRef } from "react";
+import Link from 'next/link';
+import DarkMode from "./darkModeSelector";
 
-const hamburgerLinks  = [
-    { page: "Accordion & tabs", path: "/public/accordion" },
-    { page: "Broken images & links", path: "/public/broken-links" },
-    { page: "Checkboxes", path: "/public/checkbox" },
-    { page: "Radio buttons", path: "/public/radio-buttons" },
-    { page: "Tables", path: "/public/tables" },
-]
+export default function HamburgerMenu() {
 
-// Sort the array by page name
-const sortedLinks = hamburgerLinks.sort((a, b) => a.page.localeCompare(b.page))
+    const menuItems = [
 
-// Create a list of links
-function createLinks(links: { page: string, path: string }[]) { 
-    return links.map((link) => (
-        <div key={link.page} className="p-1">
-            <div className="grid col-start-1 col-span-3">
-                <Link href={link.path}>
-                    {link.page}
-                </Link>
-            </div>
+        { name: 'Register', href: '/register' },
+        { name: 'Accordion', href: '/public/accordion' },
+        { name: 'Broken links', href: '/public/broken-links' },
+        { name: 'Radio buttons', href: '/public/radio-buttons' },
+        { name: 'Checkboxes', href: '/public/checkbox' },
+        { name: 'Todo', href: '/public/tables' },
+        { name: 'Todo2', href: '/public/tables' }
+    ];
+
+    const sortAlphabetically = (a: { name: string; }, b: { name: string; }) => {
+        if (a.name < b.name) {
+            return -1;
+        }
+        if (a.name > b.name) {
+            return 1;
+        }
+        return 0;
+    };
+    menuItems.sort(sortAlphabetically);
+
+    const permanentMenuItems = [
+        { name: 'Home', href: '/' },
+        { name: '------------', href: '' },
+    ]
+    
+    const finalMenuItems = permanentMenuItems.concat(menuItems);
+    const menuRef = useRef<HTMLDivElement>(null); // Reference to the menu container
+    const menuItemsRef = useRef<HTMLDivElement>(null); // Reference to the menu items
+
+
+  function toggleMenu() {
+    const menu = menuItemsRef.current;
+    if (menu) {
+        menu.classList.toggle("hidden");
+    }
+}
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+        // Check if the click is outside the menuRef
+        if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            const menu = document.getElementById('hamburgerMenuItems');
+            if (menu && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden'); // Close the menu
+
+            }
+        }
+    }
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+        document.removeEventListener('click', handleClickOutside);
+    };
+}, []);
+
+  return (
+    
+    <div id="hamburgerMenu" ref={menuRef}>
+        <div className="flex flex-row">
+            <Image className="m-1 cursor-pointer"
+                onClick={toggleMenu}
+                src="/hamburger.svg"
+                alt="menu"
+                width={30}
+                height={30}
+                priority />  
+            <DarkMode />
         </div>
-    ))
-}
-
-function HamburgerLinks() {
-  
-    
-    hamburgerLinks.sort((a,b )=> a.page.localeCompare(b.page))
-
-    return (
-    <div>
-        <Link href='/'>Home</Link>
-        {createLinks(sortedLinks)}
-    </div>
-)}
-
-
-export default function HamburgerMenuTwo() {
-const [isOpen, setIsOpen] = useState(false);
-
-const handleItemClick = () => {
-    setIsOpen(false); // Close the menu when an item is clicked
-}
-    
-    return (
-        <div className='min-w-[200px] max-w-[300px]' id="hamburgerMenu" >            
-            <Collapsible open={isOpen} onOpenChange={setIsOpen} className="grid col-start-1 col-span-3">
-                <CollapsibleTrigger>
-                <div className='cursor-pointer'>
-                    <Image
-                        src="/hamburger.svg"
-                        alt="menu"
-                        width={30}
-                        height={30}
-                        priority />  
+        
+        <div id="hamburgerMenuItems" 
+             className="grid row-start-1 col-start-1 justify-items-start text-(--text-color) bg-(--sidebar) m-2 min-w-[200px] max-w[300px] 
+            gap-2 shadow-(--shadow) hidden"
+            onClick={toggleMenu}
+            ref={menuItemsRef}>
+            {finalMenuItems.map((item) => (
+                <div key={item.name}>
+                    <Link href={item.href}>{item.name}</Link>
                 </div>
-                    
-                </CollapsibleTrigger>
-                <CollapsibleContent className="bg-stone-900 shadow-(--shadow) " id='hamburgerMenuItems' onClick={handleItemClick}>
-                    {HamburgerLinks()}
-                    
-                </CollapsibleContent>
-            </Collapsible>
+            ))}
         </div>
-    )}
-
-
+        
+               
+    </div>
+    )
+};
