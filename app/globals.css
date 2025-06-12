@@ -45,57 +45,6 @@
   --shadow: 0 4px 10px 0 var(--color-shadow)
 }
 
-/*input {
-  border-width: 1;
-  border-color: grey;
-  background-color: white;
-  border-radius: 4px;
-}*/
-
-/*button {
-
-  background-color: grey;
-  text-align: center;
-  color: white;
-  cursor: pointer;
-  border-radius:var(--radius-sm);
-  box-shadow: var(--shadow);
-  
-}*/
-
-/*.accordion button {
-
-  background-color: transparent;
-  text-align: center;
-  color: var(--text-color);
-  cursor: pointer;
-  border-radius:var(--radius-sm);
-  box-shadow: none;
-  
-}*/
-
-/*.accordion {
-
-  background-color: transparent;
-  color: var(--text-color);
-  cursor: pointer;
-    
-}*/
-
-/*.tab {
-  background-color: transparent;
-  
-}*/
-
-/*.tab button {
-  background-color: transparent;
-  box-shadow: none;
-  border-radius: 0%;
-  text-align: left;
-  color: var(--text-color)
-
-}*/
-
 
 h1 {
   color: var(--text-color);
@@ -162,7 +111,8 @@ label {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.8133 0 97.41);
+  /*--primary: oklch(0.205 0 0);*/
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -187,7 +137,8 @@ label {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --text-color: oklch(0.3783 0.0173 45.53)
+  --text-color: oklch(0.3162 0.0321 52.41)
+
 }
 
 .dark {
@@ -222,7 +173,8 @@ label {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-  --text-color: oklch(0.84 0.0173 45.53)
+  --text-color: oklch(0.92 0.0247 63)
+
 }
 
 @layer base {

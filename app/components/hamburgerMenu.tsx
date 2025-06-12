@@ -1,5 +1,6 @@
 "use client";
 
+
 import Link from 'next/link';
 import { Collapsible , CollapsibleTrigger, CollapsibleContent} from "@/components/ui/collapsible"
 import Image from "next/image";
@@ -72,4 +73,3 @@ const handleItemClick = () => {
     )}
 
 
-   

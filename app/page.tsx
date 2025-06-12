@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 import HamburgerMenu from "./components/hamburgerMenu";
 
@@ -8,15 +10,18 @@ export default function Home() {
         <div className="grid order-1 grid-cols-[minmax(auto,60)_1fr_minmax(auto,60)]">
             <div className="col-start-1 col-end-2 place-items-start z-50 p-3 ">
                 <HamburgerMenu ></HamburgerMenu>
+                
             </div>
+            
             <div className="justify-self-center p-5">
-                <Image 
-                    src="/hawesLogo.svg"
-                    alt="Hawes logo"
-                    width={200}
-                    height={200}
-                />
-            </div>
+                        <Image 
+                            src="/hawesLogo.svg"
+                            alt="Hawes logo"
+                            width={200}
+                            height={200}
+                        />
+                    </div>
+            
         </div>
         
             

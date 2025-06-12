@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from 'next/link';
 import HamburgerMenu from "./hamburgerMenu";
+import DarkMode from "./darkModeSelector";
 import { usePathname } from 'next/navigation'
 
 export default function Header() {
@@ -12,17 +13,16 @@ export default function Header() {
   <div className="grid auto-cols-[minmax(0,60px)_1fr_minmax(0,60px)] gap-4 w-dvw max-w-200">
     <div className="col-start-1 col-end-2 place-items-start z-50">
     <HamburgerMenu />  
-      
+    {/*<DarkMode />*/}
     </div>
     <div className="col-start-2 place-items-center overflow-clip mt-5">
         <h1>{pageTitle()}</h1>
 
     </div>
     <div className="col-start-3 justify-self-end">
-        <Link href="/">
+        <Link href="/" >
             
             <Image
-                className="dark:invert"
                 src="/hawesLogo.svg"
                 alt="Hawes logo"
                 width={100}
@@ -30,6 +30,7 @@ export default function Header() {
                 priority />
         
         </Link>
+        
     </div>
    
   </div>

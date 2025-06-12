@@ -26,15 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} antialiased`} >
       <Head>
         <meta name="viewport" content="width=device-wdth, initial-scale=1.0" />
       </Head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/*
-        Uncomment the following line to use a fixed width container
-        <div className="grid grid-cols-1 w-dvw max-w-200 min-h-dvh bg-black text-white justify-self-center"></div>
-        */}
+      <body>
+
         <div className="grid grid-cols-1 w-dvw max-w-200 min-h-dvh justify-self-center">
           {children}
         </div>
