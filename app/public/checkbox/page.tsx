@@ -24,6 +24,7 @@ export default function Page(this: any) {
         for(i; i < elements.length; i++){
             var isChecked = elements[i].ariaChecked
             if(isChecked === 'true'){
+
                 var id = elements[i].id
                 var option = document.querySelector(`label[for="${id}"]`)
                 strResult = strResult + `${option?.textContent}\n`
@@ -59,8 +60,10 @@ export default function Page(this: any) {
 
     function selectAllOptionsChange(value:string|boolean){
         // If id is allOption0 then set all option true|false as required
+
         if(value === true){
             setIsCheckedAll(Array(optionsAll.length).fill(true))
+
         }
         else {
             setIsCheckedAll(Array(optionsAll.length).fill(false))
@@ -69,6 +72,7 @@ export default function Page(this: any) {
     }
 
     function anyTwoResult(){
+
         var strResult = 'Selected options:\n'
         //Get the elements for the anyTwo checkboxes
         //Get number of checkboxes checked
@@ -80,6 +84,7 @@ export default function Page(this: any) {
                     strResult += `${options[i]}\n`
                     
                 }
+
             }
         }
         document.getElementById('anyTwoResult')!.innerText = strResult
@@ -90,6 +95,7 @@ export default function Page(this: any) {
         
         var strResult = 'Selected options: \n'
         // Check if all option are true
+
         var isAllTrueArray = Array(optionsAll.length).fill(true)
         isAllTrueArray.shift() // Remove the first element which is 'All'
         // Remove the first element from isCheckedAll
@@ -112,7 +118,7 @@ export default function Page(this: any) {
         
     }
     
-    // Use effect to check if 'any two' or 'check all' checkboxes are checked
+
 
     useEffect(() => {
         var count = isChecked.filter((check:boolean) => check === true).length
