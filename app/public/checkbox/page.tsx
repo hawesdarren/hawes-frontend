@@ -2,15 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"
-import { JSX, SetStateAction, useState } from "react";
+import { JSX, SetStateAction, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
 
 
 export default function Page(this: any) {
 
     const options: readonly string[] = ['Option 1','Option 2','Option 3','Option 4','Option 5', ]
     const [isChecked, setIsChecked]:any[] = useState(Array(options.length).fill(false))
-    const optionsAll: readonly string[] = ['All', 'Option 1','Option 2','Option 3','Option 4','Option 5', ]
+    const optionsAll: readonly string[] = ['Option 1','Option 2','Option 3','Option 4','Option 5', ]
     const [isCheckedAll, setIsCheckedAll]:any[] = useState(Array(optionsAll.length).fill(false))
     const router = useRouter()
 
@@ -23,7 +24,6 @@ export default function Page(this: any) {
         for(i; i < elements.length; i++){
             var isChecked = elements[i].ariaChecked
             if(isChecked === 'true'){
-                console.log('in is checked if statement')
                 var id = elements[i].id
                 var option = document.querySelector(`label[for="${id}"]`)
                 strResult = strResult + `${option?.textContent}\n`
@@ -32,168 +32,99 @@ export default function Page(this: any) {
         document.getElementById('multiplOptResult')!.innerText = strResult
     }
 
-    function onAnyTwoChange(value:string|boolean, id:number){
+    function onAnyTwoChange(value:string|boolean, index:number){
                 
-        setIsChecked((isChecked: (string | boolean)[])=>{
-            isChecked[id] = value
-            return isChecked
+        setIsChecked((prevState: any) => {
+            // Create a new array to avoid mutating the state directly
+            const newState = [...prevState];
+            // Set the value at the specified index
+            newState[index] = value;
+            return newState;
         })
-        //Count checkboxes with true
-        var count = isChecked.filter((check:boolean) => check === true).length
-        //Set error message when > 2
-        if(count > 2){
-            document.getElementById('anyTwoErrorMessage')?.setAttribute('class', 'visible')
-            //Unset 
-            setIsChecked((isChecked: (string | boolean)[])=>{
-                isChecked[id] = false
-                return isChecked
-                
-            })
-            
-        }
-        else {
-            document.getElementById('anyTwoErrorMessage')?.setAttribute('class', 'invisible')
-        }
-        router.refresh()
+
         
     }
 
-    function onAllOptionChange(value:string|boolean, id:number){
+    function onAllOptionChange(value:string|boolean, index:number){
+                
+            setIsCheckedAll((prevState: any) => {
+                // Create a new array to avoid mutating the state directly
+                const newState = [...prevState];
+                // Set values
+                newState[index] = value;    
+                return newState;
+            });
+               
+    }
+
+    function selectAllOptionsChange(value:string|boolean){
         // If id is allOption0 then set all option true|false as required
-        if(id === 0){
-            // Create new array and set value to true|false
-            var newArray = Array(optionsAll.length).fill(value)
-            setIsCheckedAll((isCheckedAll: (string|boolean)[]) =>{
-                isCheckedAll = newArray
-                console.log(`in set all, setting to ${isCheckedAll}`)
-                return isCheckedAll
-            })
+        if(value === true){
+            setIsCheckedAll(Array(optionsAll.length).fill(true))
         }
         else {
-            // Set the individual value
-            setIsCheckedAll((isCheckedAll: (string|boolean)[]) =>{
-                isCheckedAll[id] = value
-                return isCheckedAll
-            })
-        }        
-              
-        console.log('refreshing router')
-        router.refresh()
+            setIsCheckedAll(Array(optionsAll.length).fill(false))
+        }
         
     }
 
-    function CheckBoxArray(){
-        //Function to make checkbox array
-        const checkboxArray: JSX.Element[] = []
-        options.forEach(function (optionLabel) {
-            const id:number = options.indexOf(optionLabel)
-            const newCheckBox = CheckBoxAndLabel(id, optionLabel)
-            checkboxArray.push(newCheckBox)
-        })
-        
-       return checkboxArray
-    }
-
-    function CheckBoxAllArray(){
-        //Function to make checkbox array
-        const checkboxArray: JSX.Element[] = []
-        optionsAll.forEach(function (optionLabel) {
-            const id:number = optionsAll.indexOf(optionLabel)
-            const newCheckBox = CheckBoxAndLabelAll(id, optionLabel)
-            checkboxArray.push(newCheckBox)
-        })
-        
-       return checkboxArray
-    }
-    
     function anyTwoResult(){
-        var elements = document.getElementsByClassName('anyTwo');
-        var strResult = 'Selected options: \n'
-        //Loop through the elements, add options to result string if set to true
-        var i:number = 0;
-        for(i; i < elements.length; i++){
-            if(elements[i].ariaChecked === 'true'){
-                let id = elements[i].id
-                let option = document.querySelector(`label[for="${id}"]`)
-                strResult = strResult + `${option?.textContent}\n`
+        var strResult = 'Selected options:\n'
+        //Get the elements for the anyTwo checkboxes
+        //Get number of checkboxes checked
+        var count = isChecked.filter((check:boolean) => check === true).length
+        //If count is greater then 1, loop through the checkboxes and add to result string
+        if(count >= 1){
+            for(var i = 0; i < isChecked.length; i++){
+                if(isChecked[i] === true){
+                    strResult += `${options[i]}\n`
+                    
+                }
             }
         }
         document.getElementById('anyTwoResult')!.innerText = strResult
+       
     }
 
     function onCheckAllSubmit(){
-        var elements = document.getElementsByClassName('allOptions');
+        
         var strResult = 'Selected options: \n'
         // Check if all option are true
-        var newArray = Array(optionsAll.length).fill(true)
-        if(JSON.stringify(isCheckedAll) === JSON.stringify(newArray)){
-            console.log(`newArray: ${newArray}`)
-            console.log(`isCheckedAll: ${isCheckedAll}`)
+        var isAllTrueArray = Array(optionsAll.length).fill(true)
+        isAllTrueArray.shift() // Remove the first element which is 'All'
+        // Remove the first element from isCheckedAll
+        var isCheckedAllTest = isCheckedAll;
+        isCheckedAllTest.shift() // Remove the first element which is 'All'
+        if(JSON.stringify(isCheckedAllTest) === JSON.stringify(isAllTrueArray)){
+            console.log(`isAllTrueArray: ${isAllTrueArray}`)
+            console.log(`isCheckedAll: ${isCheckedAllTest}`)
             strResult = strResult + 'All options selected'
             document.getElementById('onCheckAllMessage')!.innerText = strResult
             document.getElementById('onCheckAllMessage')?.parentElement?.setAttribute('class', '')
         }
         else {
             strResult = strResult + 'All options MUST be selected'
+            console.log(`set errorr message, isAllTrueArray: ${isAllTrueArray}`)
+            console.log(`set error message, isCheckedAll: ${isCheckedAllTest}`)
             document.getElementById('onCheckAllMessage')!.innerText = strResult
             document.getElementById('onCheckAllMessage')?.parentElement?.setAttribute('class', 'errorMessage')
         }
         
     }
     
-    function CheckBoxAndLabel(id:number, label:string){
-        //Function to make each checkbox and label 
-        const strId:string = `anyTwo${id.toString()}`
-        //const strName:string = ``
-        return (<div className="flex flex-row gap-3 m-3" key={id}>
-            <Checkbox 
-                id={strId}
-                className='anyTwo'
-                checked={isChecked[id]}
-                value={isChecked[id]}
-                onCheckedChange={checked => onAnyTwoChange(checked, id)}
-                data-state={isChecked[id] ? true : false}
-                
-            >
-            </Checkbox>
-            <div>
-                <label
-                    htmlFor={strId}
-                >
-                    {label}
-                </label>
-            </div>
-            
-        </div>)
-    }
+    // Use effect to check if 'any two' or 'check all' checkboxes are checked
 
-    function CheckBoxAndLabelAll(id:number, label:string){
-        //Function to make each checkbox and label 
-        const strId:string = `allOptions${id.toString()}`
-        //const strName:string = ``
-        return (<div className="flex flex-row gap-3 m-3" key={id}>
-            <Checkbox 
-                id={strId}
-                className='allOptions'
-                checked={isCheckedAll[id]}
-                value={isCheckedAll[id]}
-                onCheckedChange={checked => onAllOptionChange(checked, id)}
-                data-state={isCheckedAll[id] ? true : false}
-                
-            >
-            </Checkbox>
-            <div>
-                <label
-                    htmlFor={strId}
-                >
-                    {label}
-                </label>
-            </div>
-            
-        </div>)
-    }
+    useEffect(() => {
+        var count = isChecked.filter((check:boolean) => check === true).length
+        // If count is greater than 2, show error message
+        if(count > 2){
+            document.getElementById('anyTwoErrorMessage')?.setAttribute('class', 'visible')
+        }
+        else {
+            document.getElementById('anyTwoErrorMessage')?.setAttribute('class', 'invisible')
+        }
 
-    
+    })
   
     return (
     <div className="grid grid-cols-[1fr_8fr_1fr] sm:grid-cols-[1fr_2fr_1fr] p-6 gap-3 ">
@@ -234,6 +165,31 @@ export default function Page(this: any) {
         </div>
         <div>
             <p id="optInResult"></p>
+        </div>
+        
+      </div>
+      <div className="grid col-start-2">
+        <h2>Disabled checkbox</h2>
+        <div className="flex flex-row gap-3 m-3">
+            <Checkbox 
+                id='enabled' 
+            ></Checkbox>
+            <div>
+                <label
+                    htmlFor="enabled"
+                >Enabled</label>
+            </div>
+        </div>
+        <div className="flex flex-row gap-3 m-3">
+            <Checkbox 
+                id='disabled' 
+                disabled={true}
+            ></Checkbox>
+            <div>
+                <label
+                    htmlFor="disabled"
+                >Disabled</label>
+            </div>
         </div>
         
       </div>
@@ -290,7 +246,21 @@ export default function Page(this: any) {
       </div>
         <div className="grid col-start-2">
             <h2>Select any two</h2>
-            <CheckBoxArray></CheckBoxArray>
+            {options.map((el, index) => (
+                    <div key={el} className="flex flex-row gap-3 m-3">
+                            <Checkbox
+                                id={`anyTwo${index}`}
+                                name={el}
+                                value={el}
+                                onCheckedChange={checked => {onAnyTwoChange(checked, index)}}
+                                
+                            />
+                        <div>
+                            <label htmlFor={el} >{el}</label>
+                        </div>
+                        
+                    </div>
+                ))} 
             <div className='errorMessage'>
                 <p id='anyTwoErrorMessage' className='invisible'>Only two may be checked</p>
             </div>
@@ -303,7 +273,37 @@ export default function Page(this: any) {
         </div>  
         <div className="grid col-start-2">
             <h2>Select All</h2>
-            <CheckBoxAllArray></CheckBoxAllArray>
+            <div className="flex flex-row gap-3 m-3">
+                            <Checkbox
+                                id={`allOptions`}
+                                name={'allOptions'}
+                                value={'allOptions'}
+                                className='allOptions'
+                                onCheckedChange={checked => {selectAllOptionsChange(checked)}}
+                                
+                            />
+                        <div>
+                            <label htmlFor='allOptions' >All</label>
+                        </div>
+                        
+                    </div>
+            {optionsAll.map((el, index) => (
+                    <div key={el} className="flex flex-row gap-3 m-3">
+                            <Checkbox
+                                id={`allOption${index}`}
+                                name={el}
+                                value={el}
+                                className='allOptions'
+                                onCheckedChange={checked => {onAllOptionChange(checked, index)}}
+                                checked={isCheckedAll[index]}
+                            />
+                        <div>
+                            <label htmlFor={el} >{el}</label>
+                        </div>
+                        
+                    </div>
+                ))}
+            
             <div className="m-3 gap-3">
                 <Button onClick={onCheckAllSubmit}>Submit</Button>
             </div>
