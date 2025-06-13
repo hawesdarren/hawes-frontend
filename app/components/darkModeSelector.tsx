@@ -37,7 +37,7 @@ export default function DarkMode() {
     }   
 
     return (
-        <div onClick={toggleDarkMode} className="cursor-pointer m-1">            
+        <div onClick={toggleDarkMode} className="cursor-pointer m-1" id="darkModeToggle">            
                 {isDarkMode ? <h4>&#9788;</h4> : <h4>&#9789;</h4>}
         </div>
     )
