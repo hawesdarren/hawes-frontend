@@ -15,7 +15,7 @@ export default function Page(this: any) {
     const [isCheckedAll, setIsCheckedAll]:any[] = useState(Array(optionsAll.length).fill(false))
     const router = useRouter()
 
-    function multiplOptResult(){
+    function multipleOptResult(){
         //Get the elements for the multi checkbox
         var elements = document.getElementsByClassName('multiCheckbox')
         //Loop over elements
@@ -30,7 +30,7 @@ export default function Page(this: any) {
                 strResult = strResult + `${option?.textContent}\n`
             }
         }
-        document.getElementById('multiplOptResult')!.innerText = strResult
+        document.getElementById('multipleOptResult')!.innerText = strResult
     }
 
     function onAnyTwoChange(value:string|boolean, index:number){
@@ -201,7 +201,7 @@ export default function Page(this: any) {
       </div>
       <div className="grid col-start-2">
         <h2>Multiple checkboxes</h2>
-        <div>
+        <div data-testid="multiCheckboxes">
             <div className="flex flex-row gap-3 m-3">
                 <Checkbox 
                     id='opt1'
@@ -242,16 +242,17 @@ export default function Page(this: any) {
                 
             </div>
             <div className="m-3 gap-3">
-                <Button onClick={multiplOptResult}>Submit</Button>
+                <Button onClick={multipleOptResult}>Submit</Button>
             </div>
             <div className="m-3 gap-3">
-                <p id="multiplOptResult"></p>
+                <p id="multipleOptResult"></p>
             </div>
         </div>
      
       </div>
-        <div className="grid col-start-2">
+        <div className="grid col-start-2" data-testid="anyTwoCheckboxes">
             <h2>Select any two</h2>
+            <div>
             {options.map((el, index) => (
                     <div key={el} className="flex flex-row gap-3 m-3">
                             <Checkbox
@@ -262,11 +263,13 @@ export default function Page(this: any) {
                                 
                             />
                         <div>
-                            <label htmlFor={el} >{el}</label>
+                            <label htmlFor={`anyTwo${index}`} >{el}</label>
                         </div>
                         
                     </div>
                 ))} 
+            </div>
+            
             <div className='errorMessage'>
                 <p id='anyTwoErrorMessage' className='invisible'>Only two may be checked</p>
             </div>
@@ -277,7 +280,7 @@ export default function Page(this: any) {
                 <p id="anyTwoResult"></p>    
             </div> 
         </div>  
-        <div className="grid col-start-2">
+        <div className="grid col-start-2" data-testid="allCheckboxes">
             <h2>Select All</h2>
             <div className="flex flex-row gap-3 m-3">
                             <Checkbox
@@ -296,7 +299,7 @@ export default function Page(this: any) {
             {optionsAll.map((el, index) => (
                     <div key={el} className="flex flex-row gap-3 m-3">
                             <Checkbox
-                                id={`allOption${index}`}
+                                id={`allOptions${index}`}
                                 name={el}
                                 value={el}
                                 className='allOptions'
@@ -304,7 +307,7 @@ export default function Page(this: any) {
                                 checked={isCheckedAll[index]}
                             />
                         <div>
-                            <label htmlFor={el} >{el}</label>
+                            <label htmlFor={`allOptions${index}`} >{el}</label>
                         </div>
                         
                     </div>

@@ -13,7 +13,7 @@ export default function Page(this: any) {
 
   return (
     <div className="grid grid-cols-[1fr_8fr_1fr] sm:grid-cols-[1fr_2fr_1fr] p-6 gap-3 ">
-      <div className="grid col-start-1 col-span-3">
+      <div className="grid col-start-1 col-span-3" data-testid="challenge" id="challenge">
         <p>Challenge to to use the accordions</p>
       </div>
       <div className="grid col-start-2 m-6 gap-6 text-left accordion">
@@ -21,7 +21,7 @@ export default function Page(this: any) {
                 <Accordion type='single' collapsible >
                     <AccordionItem value='Accordion item'>
                         <AccordionTrigger>Terms and conditions</AccordionTrigger>
-                        <AccordionContent>{termsAndConditions()}</AccordionContent>
+                        <AccordionContent data-testid='termsContent'>{termsAndConditions()}</AccordionContent>
                         <AccordionContent className='flex gap-3'>
                             <Checkbox 
                                 id='termsAndCondtions'
@@ -44,19 +44,19 @@ export default function Page(this: any) {
             <div >
                 <p>Only one can be expanded at a time</p>
                 <Accordion type='single' collapsible>
-                    <AccordionItem value='Single accordion - number 1' className='indent-3'>
-                        <AccordionTrigger >1st Accordion</AccordionTrigger>
-                            <AccordionContent>Content 1</AccordionContent>
+                    <AccordionItem value='Single accordion - number 1' className='indent-3' data-testid='single-accordion-1'>
+                        <AccordionTrigger>1st Accordion</AccordionTrigger>
+                            <AccordionContent >Content 1</AccordionContent>
                             <AccordionContent>Content 1b</AccordionContent>
                             <AccordionContent>Content 1c</AccordionContent>
                     </AccordionItem>
-                    <AccordionItem value='Single accordion - number 2' className='indent-3'>
+                    <AccordionItem value='Single accordion - number 2' className='indent-3' data-testid='single-accordion-2'>
                         <AccordionTrigger >2nd Accordion</AccordionTrigger>
                             <AccordionContent>Content 2</AccordionContent>
                             <AccordionContent>Content 2b</AccordionContent>
                             <AccordionContent>Content 2c</AccordionContent>
                     </AccordionItem>
-                    <AccordionItem value='Single accordion - number 3' className='indent-3'>
+                    <AccordionItem value='Single accordion - number 3' className='indent-3' data-testid='single-accordion-3'>
                         <AccordionTrigger >3rd Accordion</AccordionTrigger>
                             <AccordionContent>Content 3</AccordionContent>
                             <AccordionContent>Content 3b</AccordionContent>
@@ -67,19 +67,19 @@ export default function Page(this: any) {
             <div >
                 <p>Multiple accordions can be expanded</p>
                 <Accordion type='multiple' >
-                    <AccordionItem value='Multiple accordion - number 1' className='indent-3'>
+                    <AccordionItem value='Multiple accordion - number 1' className='indent-3' data-testid="multiple-accordion-1">
                         <AccordionTrigger >Item 1</AccordionTrigger>
                             <AccordionContent>Content 1</AccordionContent>
                             <AccordionContent>Content 1b</AccordionContent>
                             <AccordionContent>Content 1c</AccordionContent>
                     </AccordionItem>
-                    <AccordionItem value='Multiple accordion - number 2' className='indent-3'>
+                    <AccordionItem value='Multiple accordion - number 2' className='indent-3' data-testid="multiple-accordion-2">
                         <AccordionTrigger >Item 2</AccordionTrigger>
                             <AccordionContent>Content 2</AccordionContent>
                             <AccordionContent>Content 2b</AccordionContent>
                             <AccordionContent>Content 2c</AccordionContent>
                     </AccordionItem>
-                    <AccordionItem value='Multiple accordion - number 3' className='indent-3'>
+                    <AccordionItem value='Multiple accordion - number 3' className='indent-3' data-testid="multiple-accordion-3">
                         <AccordionTrigger >Item 3</AccordionTrigger>
                             <AccordionContent>Content 3</AccordionContent>
                             <AccordionContent>Content 3b</AccordionContent>
@@ -92,9 +92,9 @@ export default function Page(this: any) {
                 <p>A tab work horizontally</p>
                 <Tabs className="tab" defaultValue='tab1'>
                     <TabsList>
-                        <TabsTrigger value='tab1'>Tab 1</TabsTrigger>
-                        <TabsTrigger value='tab2'>Tab 2</TabsTrigger>
-                        <TabsTrigger value='tab3'>Tab 3</TabsTrigger>
+                        <TabsTrigger value='tab1' data-testid="tab-1">Tab 1</TabsTrigger>
+                        <TabsTrigger value='tab2' data-testid="tab-1">Tab 2</TabsTrigger>
+                        <TabsTrigger value='tab3' data-testid="tab-1">Tab 3</TabsTrigger>
                     </TabsList>
                     <TabsContent value='tab1'>
                         <p>Item 1 in tab 1</p>
