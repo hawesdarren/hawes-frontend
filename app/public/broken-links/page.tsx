@@ -25,7 +25,8 @@ export default function Page() {
         <h2>Todo - downloads</h2>
       </div>
       <div>
-        <h2>Todo - internal and external links2</h2>
+        <h2>Todo - internal and external links</h2>
+        <Link href="/public/checkbox">Checkbox</Link>
       </div>
 
     
