@@ -6,7 +6,7 @@ test('Checkboxes - Single Checkbox', async ({ page }) => {
   const checkbox = page.getByLabel('Accept terms and conditions');
   await expect(checkbox).toBeVisible();
   await expect(checkbox).not.toBeChecked()
-  await checkbox.click();
+  await checkbox.check();
   await expect(checkbox).toBeChecked();
   // Confirm that the checkbox is checked
   const tAndCResult = page.locator('#tAndCResult');
@@ -19,9 +19,8 @@ test('Checkboxes - Default checkbox', async ({ page }) => {
     //const defaultCheckbox = page.getByLabel('Send specials and newsletters');
     const defaultCheckbox = page.locator('#optIn');
     expect (await defaultCheckbox.isVisible());
-    //await expect(defaultCheckbox).toBeVisible();
     await expect(defaultCheckbox).toBeChecked();
-    await defaultCheckbox.click();
+    await defaultCheckbox.uncheck();
     await expect(defaultCheckbox).not.toBeChecked();
     // Confirm that the checkbox is checked
     const defaultResult = page.locator('#optInResult');
@@ -55,19 +54,19 @@ test('Checkboxes - Multiple checkboxes', async ({ page }) => {
     await expect(submitButton).toBeVisible();
 
     // Check the first checkbox
-    await checkbox1.click();
+    await checkbox1.check();
     await expect(checkbox1).toBeChecked();
 
     // Check the second checkbox
-    await checkbox2.click();
+    await checkbox2.check();
     await expect(checkbox2).toBeChecked();
 
     // Uncheck the first checkbox
-    await checkbox1.click();
+    await checkbox1.uncheck();
     await expect(checkbox1).not.toBeChecked();
 
     // Check the third checkbox
-    await checkbox3.click();
+    await checkbox3.check();
     await expect(checkbox3).toBeChecked();
 
     // Submit the form
@@ -99,22 +98,22 @@ test("Checkboxes - Select any two checkboxes", async ({ page }) => {
     await expect(submitButton).toBeVisible();
 
     // Check the first checkbox
-    await checkbox1.click();
+    await checkbox1.check();
     await expect(checkbox1).toBeChecked();
 
     // Check the second checkbox
-    await checkbox2.click();
+    await checkbox2.check();
     await expect(checkbox2).toBeChecked();
 
-    // Attempt to check the third checkbox (should not be allowed)
-    await checkbox3.click();
+    // Check the third checkbox 
+    await checkbox3.check();
     await expect(checkbox3).toBeChecked();
     // Check warning message
     await expect(warningMessage).toBeVisible();
     await expect(warningMessage).toHaveText('Only two may be checked');
 
     // Uncheck the first checkbox
-    await checkbox1.click();
+    await checkbox1.uncheck();
     await expect(checkbox1).not.toBeChecked();  
     // Check the warning message again
     await expect(warningMessage).not.toBeVisible(); 
@@ -149,7 +148,7 @@ test("Checkboxes - Select all checkboxes", async ({ page }) => {
     await expect(submitButton).toBeVisible();
 
     // Click the "Select All" button
-    await checkboxAll.click();
+    await checkboxAll.check();
 
     // Confirm that all checkboxes are checked
     await expect(checkbox1).toBeChecked();
@@ -159,7 +158,7 @@ test("Checkboxes - Select all checkboxes", async ({ page }) => {
     await expect(checkbox5).toBeChecked();
 
     // Uncheck all checkboxes
-    await checkboxAll.click();
+    await checkboxAll.uncheck();
 
     // Confirm that all checkboxes are unchecked
     await expect(checkbox1).not.toBeChecked();
@@ -169,7 +168,7 @@ test("Checkboxes - Select all checkboxes", async ({ page }) => {
     await expect(checkbox5).not.toBeChecked();  
 
     // Check the first checkbox
-    await checkbox1.click();
+    await checkbox1.check();
     await expect(checkbox1).toBeChecked();  
 
     // Submit the from
@@ -180,13 +179,13 @@ test("Checkboxes - Select all checkboxes", async ({ page }) => {
     await expect(selectAllErrorMessage).toHaveText('Selected options: All options MUST be selected'); 
     
     // Check the remaining checkboxes
-    await checkbox2.click();
+    await checkbox2.check();
     await expect(checkbox2).toBeChecked();
-    await checkbox3.click();
+    await checkbox3.check();
     await expect(checkbox3).toBeChecked();
-    await checkbox4.click();
+    await checkbox4.check();
     await expect(checkbox4).toBeChecked();
-    await checkbox5.click();
+    await checkbox5.check();
     await expect(checkbox5).toBeChecked();  
 
     // Submit the form again
