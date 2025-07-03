@@ -14,7 +14,7 @@ export default function HamburgerMenu() {
         { name: 'Broken links', href: '/public/broken-links' },
         { name: 'Radio buttons', href: '/public/radio-buttons' },
         { name: 'Checkboxes', href: '/public/checkbox' },
-        { name: 'Todo', href: '/public/tables' },
+        { name: 'Calendar', href: '/public/calendar' },
         { name: 'Todo2', href: '/public/tables' }
     ];
 

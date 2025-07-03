@@ -29,7 +29,7 @@ function isValidDate(date: Date | undefined) {
 export default function Page(this: any) {
     
     const [date, setDate] = React.useState<Date | undefined>(new Date());
-    const [dateRange, setDateRange] = React.useState<DateRange>({from: new Date(), to: new Date()});
+    const [dateRange, setDateRange] = React.useState<DateRange | undefined>({from: undefined, to: undefined});
     const [dob, setDob] = React.useState<Date | undefined>(new Date());
     const [inputDate, setInputDate] = React.useState<Date | undefined>(new Date());
     const [inputDateMonth, setInputDateMonth] = React.useState<Date | undefined>(inputDate);
@@ -50,6 +50,8 @@ export default function Page(this: any) {
                 You can use the calendar to select a date and it will be displayed in the below.
             </p>
             <Calendar
+                id="singleCalendar"
+                data-testid="singleCalendar"
                 mode="single"
                 selected={date}
                 onSelect={(date) => {
@@ -70,6 +72,8 @@ export default function Page(this: any) {
                 You can use the calendar to select a date of birth and it will be displayed in the below.
             </p>
             <Calendar
+                id="dobCalendar"
+                data-testid="dobCalendar"
                 mode="single"
                 disabled={{after: new Date()}}
                 selected={dob}
@@ -91,6 +95,8 @@ export default function Page(this: any) {
                 You can use the calendar to select a date range and it will be displayed in the below.
             </p>
             <Calendar
+                id="dateRangeCalendar"
+                data-testid="dateRangeCalendar"
                 mode="range"
                 selected={dateRange}
                 onSelect={(range) => {
@@ -118,6 +124,7 @@ export default function Page(this: any) {
             <div className="flex relative flex gap-2">
             <Input
                 id="inputDate"
+                data-testid="inputDate"
                 placeholder="date"
                 value={inputDate ? formatDate(inputDate) : ""}
                 onChange={(e) => {
@@ -141,6 +148,7 @@ export default function Page(this: any) {
                 <PopoverTrigger asChild>
                     <Button
                         id="openCalendar"
+                        data-testid="openCalendar"
                         className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
                         variant="ghost"
                     >
@@ -155,6 +163,8 @@ export default function Page(this: any) {
                     sideOffset={10}
                 >
                     <Calendar
+                        id="inputDateCalendar"
+                        data-testid="inputDateCalendar"
                         mode="single"
                         selected={inputDate}
                         captionLayout="dropdown"
@@ -191,6 +201,7 @@ export default function Page(this: any) {
                 <PopoverTrigger asChild>
                     <Button
                     id="setDateButton"
+                    data-testid="setDateButton"
                     value={buttonDate ? formatDate(buttonDate) : ""}
                     variant={buttonDate ? "secondary" : "outline"}
                     onClick={() => {
@@ -213,6 +224,8 @@ export default function Page(this: any) {
                     sideOffset={10}
                 >
                     <Calendar
+                        id="buttonDateCalendar"
+                        data-testid="buttonDateCalendar"
                         mode="single"
                         selected={buttonDate}
                         captionLayout="dropdown"
