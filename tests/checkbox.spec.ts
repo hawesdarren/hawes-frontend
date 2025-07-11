@@ -1,196 +1,177 @@
 import { expect, test } from '@playwright/test';
+import { CheckboxPage } from './pom/checkbox';
 
-test('Checkboxes - Single Checkbox', async ({ page }) => {
-  await page.goto('/public/checkbox');
-  //const checkbox = page.locator('#termsandconditions');
-  const checkbox = page.getByLabel('Accept terms and conditions');
-  await expect(checkbox).toBeVisible();
-  await expect(checkbox).not.toBeChecked()
-  await checkbox.check();
-  await expect(checkbox).toBeChecked();
+test.describe('Checkbox Tests', () => {
+  let checkboxPage: CheckboxPage;
+
+test.beforeEach(async ({ page }) => {
+    checkboxPage = new CheckboxPage(page);
+    await page.goto('/public/checkbox');
+    await expect(checkboxPage.heading).toBeVisible();
+    await expect(checkboxPage.challenge).toBeVisible();
+    await expect(checkboxPage.heading).toHaveText('Checkbox');
+});
+
+test('Single Checkbox', async ({ page }) => {
+   
+  await expect(checkboxPage.singleCheckbox).toBeVisible();
+  await expect(checkboxPage.singleCheckbox).not.toBeChecked()
+  await checkboxPage.singleCheckbox.check();
+  await expect(checkboxPage.singleCheckbox).toBeChecked();
   // Confirm that the checkbox is checked
-  const tAndCResult = page.locator('#tAndCResult');
-  await expect(tAndCResult).toBeVisible();
-  await expect(tAndCResult).toHaveText('Terms and Conditions: true');
+  await expect(checkboxPage.singleCheckboxResult).toBeVisible();
+  await expect(checkboxPage.singleCheckboxResult).toHaveText('Terms and Conditions: true');
 });
 
-test('Checkboxes - Default checkbox', async ({ page }) => {
-    await page.goto('/public/checkbox');
-    //const defaultCheckbox = page.getByLabel('Send specials and newsletters');
-    const defaultCheckbox = page.locator('#optIn');
-    expect (await defaultCheckbox.isVisible());
-    await expect(defaultCheckbox).toBeChecked();
-    await defaultCheckbox.uncheck();
-    await expect(defaultCheckbox).not.toBeChecked();
+test('Default checkbox', async ({ page }) => {
+    
+    expect (await checkboxPage.defaultCheckbox.isVisible());
+    await expect(checkboxPage.defaultCheckbox).toBeChecked();
+    await checkboxPage.defaultCheckbox.uncheck();
+    await expect(checkboxPage.defaultCheckbox).not.toBeChecked();
     // Confirm that the checkbox is checked
-    const defaultResult = page.locator('#optInResult');
-    await expect(defaultResult).toBeVisible();
-    await expect(defaultResult).toHaveText('Opt in: false');
+    await expect(checkboxPage.defaultCheckboxResult).toBeVisible();
+    await expect(checkboxPage.defaultCheckboxResult).toHaveText('Opt in: false');
 });
 
-test('Checkboxes - Disabled checkbox', async ({ page }) => {
-    await page.goto('/public/checkbox');
-    const disabledCheckbox = page.getByLabel('Disabled');
-    await expect(disabledCheckbox).toBeVisible();
-    await expect(disabledCheckbox).toBeDisabled();
+test('Disabled checkbox', async ({ page }) => {
+    
+    await expect(checkboxPage.disabledCheckbox).toBeVisible();
+    await expect(checkboxPage.disabledCheckbox).toBeDisabled();
     // Attempt to click the disabled checkbox
-    await disabledCheckbox.click({ force: true });
+    await checkboxPage.disabledCheckbox.click({ force: true });
     // Confirm that the checkbox is still disabled
-    await expect(disabledCheckbox).toBeDisabled();
+    await expect(checkboxPage.disabledCheckbox).toBeDisabled();
 });
 
-test('Checkboxes - Multiple checkboxes', async ({ page }) => {
-    await page.goto('/public/checkbox');
-    const multipleCheckboxesSection = page.getByTestId('multiCheckboxes');
-    const checkbox1 = multipleCheckboxesSection.getByRole('checkbox', { name: 'Option 1' });
-    const checkbox2 = multipleCheckboxesSection.getByRole('checkbox', { name: 'Option 2' });
-    const checkbox3 = multipleCheckboxesSection.getByRole('checkbox', { name: 'Option 3' });
-    const submitButton = multipleCheckboxesSection.getByRole('button', { name: 'Submit' });
-    await expect(multipleCheckboxesSection).toBeVisible();
-    await expect(checkbox1).toBeVisible();
-    await expect(checkbox2).toBeVisible();
-    await expect(checkbox3).toBeVisible();
-
-    await expect(submitButton).toBeVisible();
+test('Multiple checkboxes', async ({ page }) => {
+    
+    await expect(checkboxPage.multipleCheckboxesSection).toBeVisible();
+    await expect(checkboxPage.multipleCheckboxesCheckbox1).toBeVisible();
+    await expect(checkboxPage.multipleCheckboxesCheckbox2).toBeVisible();
+    await expect(checkboxPage.multipleCheckboxesCheckbox3).toBeVisible();
+    await expect(checkboxPage.multipleCheckboxesSubmitButton).toBeVisible();
 
     // Check the first checkbox
-    await checkbox1.check();
-    await expect(checkbox1).toBeChecked();
+    await checkboxPage.multipleCheckboxesCheckbox1.check();
+    await expect(checkboxPage.multipleCheckboxesCheckbox1).toBeChecked();
 
     // Check the second checkbox
-    await checkbox2.check();
-    await expect(checkbox2).toBeChecked();
+    await checkboxPage.multipleCheckboxesCheckbox2.check();
+    await expect(checkboxPage.multipleCheckboxesCheckbox2).toBeChecked();
 
     // Uncheck the first checkbox
-    await checkbox1.uncheck();
-    await expect(checkbox1).not.toBeChecked();
+    await checkboxPage.multipleCheckboxesCheckbox1.uncheck();
+    await expect(checkboxPage.multipleCheckboxesCheckbox1).not.toBeChecked();
 
     // Check the third checkbox
-    await checkbox3.check();
-    await expect(checkbox3).toBeChecked();
+    await checkboxPage.multipleCheckboxesCheckbox3.check();
+    await expect(checkboxPage.multipleCheckboxesCheckbox3).toBeChecked();
 
     // Submit the form
-    await submitButton.click();
+    await checkboxPage.multipleCheckboxesSubmitButton.click();
 
     // Confirm that the results are displayed correctly
-    const multipleResult = multipleCheckboxesSection.locator('#multipleOptResult');
-    await expect(multipleResult).toBeVisible();
-    await expect(multipleResult).toHaveText('Options selected:Option 2Option 3'); //Playwright removes extar whitespace and line breaks
+    await expect(checkboxPage.multipleCheckboxesResult).toBeVisible();
+    await expect(checkboxPage.multipleCheckboxesResult).toHaveText('Options selected:Option 2Option 3'); //Playwright removes extar whitespace and line breaks
 });
 
-test("Checkboxes - Select any two checkboxes", async ({ page }) => {
-    await page.goto('/public/checkbox');
-    const selectTwoCheckboxesSection = page.getByTestId('anyTwoCheckboxes');
-    const checkbox1 = selectTwoCheckboxesSection.getByRole('checkbox', { name: 'Option 1' });
-    const checkbox2 = selectTwoCheckboxesSection.getByRole('checkbox', { name: 'Option 2' });
-    const checkbox3 = selectTwoCheckboxesSection.getByRole('checkbox', { name: 'Option 3' });
-    const checkbox4 = selectTwoCheckboxesSection.getByRole('checkbox', { name: 'Option 4' });
-    const checkbox5 = selectTwoCheckboxesSection.getByRole('checkbox', { name: 'Option 5' });
-    const submitButton = selectTwoCheckboxesSection.getByRole('button', { name: 'Submit' });
-    const warningMessage = selectTwoCheckboxesSection.locator('#anyTwoErrorMessage');
+test("Select any two checkboxes", async ({ page }) => {
+    
+    //const warningMessage = selectTwoCheckboxesSection.locator('#anyTwoErrorMessage');
 
-    await expect(selectTwoCheckboxesSection).toBeVisible();
-    await expect(checkbox1).toBeVisible();
-    await expect(checkbox2).toBeVisible();
-    await expect(checkbox3).toBeVisible();
-    await expect(checkbox4).toBeVisible();
-    await expect(checkbox5).toBeVisible();
-    await expect(submitButton).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesSection).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox1).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox2).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox3).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox4).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox5).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesSubmitButton).toBeVisible();
 
     // Check the first checkbox
-    await checkbox1.check();
-    await expect(checkbox1).toBeChecked();
+    await checkboxPage.anyTwoCheckboxesCheckbox1.check();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox1).toBeChecked();
 
     // Check the second checkbox
-    await checkbox2.check();
-    await expect(checkbox2).toBeChecked();
+    await checkboxPage.anyTwoCheckboxesCheckbox2.check();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox2).toBeChecked();
 
     // Check the third checkbox 
-    await checkbox3.check();
-    await expect(checkbox3).toBeChecked();
+    await checkboxPage.anyTwoCheckboxesCheckbox3.check();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox3).toBeChecked();
     // Check warning message
-    await expect(warningMessage).toBeVisible();
-    await expect(warningMessage).toHaveText('Only two may be checked');
+    await expect(checkboxPage.anyTwoCheckboxesWarningMessage).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesWarningMessage).toHaveText('Only two may be checked');
 
     // Uncheck the first checkbox
-    await checkbox1.uncheck();
-    await expect(checkbox1).not.toBeChecked();  
+    await checkboxPage.anyTwoCheckboxesCheckbox1.uncheck();
+    await expect(checkboxPage.anyTwoCheckboxesCheckbox1).not.toBeChecked();  
     // Check the warning message again
-    await expect(warningMessage).not.toBeVisible(); 
+    await expect(checkboxPage.anyTwoCheckboxesWarningMessage).not.toBeVisible(); 
 
     // Submit the form
-    await submitButton.click();
+    await checkboxPage.anyTwoCheckboxesSubmitButton.click();
 
     // Confirm that the results are displayed correctly
-    const selectTwoResult = selectTwoCheckboxesSection.locator('#anyTwoResult');
-    await expect(selectTwoResult).toBeVisible();
-    await expect(selectTwoResult).toHaveText('Selected options:Option 2Option 3'); //Playwright removes exta whitespace and line breaks
+    await expect(checkboxPage.anyTwoCheckboxesResult).toBeVisible();
+    await expect(checkboxPage.anyTwoCheckboxesResult).toHaveText('Selected options:Option 2Option 3'); //Playwright removes exta whitespace and line breaks
 });
 
-test("Checkboxes - Select all checkboxes", async ({ page }) => {
-    await page.goto('/public/checkbox');
-    const selectAllCheckboxesSection = page.getByTestId('allCheckboxes');
-    const checkbox1 = selectAllCheckboxesSection.getByRole('checkbox', { name: 'Option 1' });
-    const checkbox2 = selectAllCheckboxesSection.getByRole('checkbox', { name: 'Option 2' });
-    const checkbox3 = selectAllCheckboxesSection.getByRole('checkbox', { name: 'Option 3' });
-    const checkbox4 = selectAllCheckboxesSection.getByRole('checkbox', { name: 'Option 4' });
-    const checkbox5 = selectAllCheckboxesSection.getByRole('checkbox', { name: 'Option 5' });
-    const checkboxAll = selectAllCheckboxesSection.getByRole('checkbox', { name: 'All' });
-    const submitButton = selectAllCheckboxesSection.getByRole('button', { name: 'Submit' });
-
-    await expect(selectAllCheckboxesSection).toBeVisible();
-    await expect(checkbox1).toBeVisible();
-    await expect(checkbox2).toBeVisible();
-    await expect(checkbox3).toBeVisible();
-    await expect(checkbox4).toBeVisible();
-    await expect(checkbox5).toBeVisible();
-    await expect(checkboxAll).toBeVisible();
-    await expect(submitButton).toBeVisible();
+test("Select all checkboxes", async ({ page }) => {
+   
+    await expect(checkboxPage.selectAllCheckboxesSection).toBeVisible();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox1).toBeVisible();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox2).toBeVisible();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox3).toBeVisible();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox4).toBeVisible();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox5).toBeVisible();
+    await expect(checkboxPage.selectAllCheckboxesCheckboxAll).toBeVisible();
+    await expect(checkboxPage.selectAllCheckboxesSubmitButton).toBeVisible();
 
     // Click the "Select All" button
-    await checkboxAll.check();
+    await checkboxPage.selectAllCheckboxesCheckboxAll.check();
 
     // Confirm that all checkboxes are checked
-    await expect(checkbox1).toBeChecked();
-    await expect(checkbox2).toBeChecked();
-    await expect(checkbox3).toBeChecked();
-    await expect(checkbox4).toBeChecked();
-    await expect(checkbox5).toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox1).toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox2).toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox3).toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox4).toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox5).toBeChecked();
 
     // Uncheck all checkboxes
-    await checkboxAll.uncheck();
+    await checkboxPage.selectAllCheckboxesCheckboxAll.uncheck();
 
     // Confirm that all checkboxes are unchecked
-    await expect(checkbox1).not.toBeChecked();
-    await expect(checkbox2).not.toBeChecked();
-    await expect(checkbox3).not.toBeChecked();
-    await expect(checkbox4).not.toBeChecked();
-    await expect(checkbox5).not.toBeChecked();  
+    await expect(checkboxPage.selectAllCheckboxesCheckbox1).not.toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox2).not.toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox3).not.toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox4).not.toBeChecked();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox5).not.toBeChecked();  
 
     // Check the first checkbox
-    await checkbox1.check();
-    await expect(checkbox1).toBeChecked();  
+    await checkboxPage.selectAllCheckboxesCheckbox1.check();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox1).toBeChecked();  
 
     // Submit the from
-    await submitButton.click();
+    await checkboxPage.selectAllCheckboxesSubmitButton.click();
     // Check error message
-    const selectAllErrorMessage = selectAllCheckboxesSection.locator('#onCheckAllMessage');
-    await expect(selectAllErrorMessage).toBeVisible();
-    await expect(selectAllErrorMessage).toHaveText('Selected options: All options MUST be selected'); 
+    await expect(checkboxPage.selectAllCheckboxesMessage).toBeVisible();
+    await expect(checkboxPage.selectAllCheckboxesMessage).toHaveText('Selected options: All options MUST be selected'); 
     
     // Check the remaining checkboxes
-    await checkbox2.check();
-    await expect(checkbox2).toBeChecked();
-    await checkbox3.check();
-    await expect(checkbox3).toBeChecked();
-    await checkbox4.check();
-    await expect(checkbox4).toBeChecked();
-    await checkbox5.check();
-    await expect(checkbox5).toBeChecked();  
+    await checkboxPage.selectAllCheckboxesCheckbox2.check();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox2).toBeChecked();
+    await checkboxPage.selectAllCheckboxesCheckbox3.check();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox3).toBeChecked();
+    await checkboxPage.selectAllCheckboxesCheckbox4.check();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox4).toBeChecked();
+    await checkboxPage.selectAllCheckboxesCheckbox5.check();
+    await expect(checkboxPage.selectAllCheckboxesCheckbox5).toBeChecked();  
 
     // Submit the form again
-    await submitButton.click(); 
+    await checkboxPage.selectAllCheckboxesSubmitButton.click(); 
     // Confirm that the results are displayed correctly
-    await expect(selectAllErrorMessage).toHaveText('Selected options: All options selected');
+    await expect(checkboxPage.selectAllCheckboxesMessage).toHaveText('Selected options: All options selected');
 
+});
 });

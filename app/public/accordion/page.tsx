@@ -39,7 +39,7 @@ export default function Page(this: any) {
                 </Accordion>
             </div>
             <div>
-                <p id='tAndCResult'></p>
+                <p id='tAndCResult' data-testid='tAndCResult'></p>
             </div>
             <div >
                 <p>Only one can be expanded at a time</p>
