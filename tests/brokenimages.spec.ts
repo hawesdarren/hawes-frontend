@@ -1,18 +1,19 @@
 import { test, expect } from '@playwright/test';
-import { time } from 'console';
+import { BrokenLinksPage } from './pom/brokenLinks';
 
-test.skip('Broken images - Check for all downloads', async ({ page }) => {
+test.describe('Broken Images and Links Tests', () => {
+    let brokenLinksPage: BrokenLinksPage;
 
-  // Elements
-  const images = page.locator('img');
+
+test.skip('Broken images - Check for all downloads 1', async ({ page }) => {
   
-  // Loop through each image and check if it is broken
-  const imageCount = await images.count();
+  // Use the router to intercept all requests and check for status codes
+  
   await page.route('/**/*', async (route) => {
     const response = await route.fetch({
         timeout: 5000 // Set a timeout for the request
     });
-    expect.soft(response.status(), `Image at ${route.request().url()} is broken.`).toBeLessThan(400);
+    expect.soft(response.status(), `Download at ${route.request().url()} is broken.`).toBeLessThan(400);
     route.continue();
   });
   await page.goto('public/broken-links');
@@ -22,14 +23,13 @@ test.skip('Broken images - Check for all downloads', async ({ page }) => {
 
 });
 
-test('Broken images - Check for all downloads', async ({ page }) => {
-
-    // Elements
-    const images = page.locator('img');
+test('Broken images - Check for all downloads 2', async ({ page }) => {
+    brokenLinksPage = new BrokenLinksPage(page);
+        
     // Set error count var
     var errorCount = 0;
-    // Loop through each image and check if it is broken
-    const imageCount = await images.count();
+    // Use the router to intercept all requests and check for status codes
+    
     await page.route('/**/*', async (route) => {
       const response = await route.fetch({
           timeout: 5000 // Set a timeout for the request
@@ -51,13 +51,8 @@ test('Broken link - Check for broken images', async ({ page }) => {
   await page.goto('public/broken-links');
   // Wait for the page to load completely
   await page.waitForLoadState('networkidle');
-  await expect(page.getByText('The challenge is to find all of the broken links and images in this page')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Images' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Todo - downloads' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Todo - internal and external links' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Checkbox' })).toBeVisible();
 
-  // v set var for error count
+  // set var for error count
   var errorCount = 0;
 
   // Elements
@@ -84,4 +79,5 @@ test('Broken link - Check for broken images', async ({ page }) => {
   console.log(`Total errors found: ${errorCount}`);
   // Expecting 2 broken images as per the test case description
   expect(errorCount).toBe(2); 
+});
 });

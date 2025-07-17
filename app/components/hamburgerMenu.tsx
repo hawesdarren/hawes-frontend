@@ -14,8 +14,8 @@ export default function HamburgerMenu() {
         { name: 'Broken links', href: '/public/broken-links' },
         { name: 'Radio buttons', href: '/public/radio-buttons' },
         { name: 'Checkboxes', href: '/public/checkbox' },
-        { name: 'Todo', href: '/public/tables' },
-        { name: 'Todo2', href: '/public/tables' }
+        { name: 'Calendar', href: '/public/calendar' },
+        { name: 'Tables', href: '/public/tables' }
     ];
 
     const sortAlphabetically = (a: { name: string; }, b: { name: string; }) => {
@@ -66,7 +66,7 @@ export default function HamburgerMenu() {
 
   return (
     
-    <div id="hamburgerMenu" ref={menuRef}>
+    <div id="hamburgerMenu" data-testid="hamburgerMenu" ref={menuRef}>
         <div className="flex flex-row">
             <Image className="m-1 cursor-pointer"
                 onClick={toggleMenu}

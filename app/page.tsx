@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import HamburgerMenu from "./components/hamburgerMenu";
+import Footer from "./components/footer";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
             
             <div className="justify-self-center p-5">
                         <Image 
+                            data-testid="logo"
                             src="/hawesLogo.svg"
                             alt="Hawes logo"
                             width={200}
@@ -36,7 +38,7 @@ export default function Home() {
                 </p>
             </div>
             <div className="order-4 justify-self-left self-end p-3">
-                Contact
+                <Footer />
             </div>
   
         
