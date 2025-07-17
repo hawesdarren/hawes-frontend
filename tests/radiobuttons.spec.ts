@@ -1,105 +1,93 @@
 import { test, expect } from '@playwright/test';
+import  { RadioButtonsPage } from './pom/radioButtons'
 
-test('Radio buttons - Triple option selection', async ({ page }) => {
-  await page.goto('public/radio-buttons');
+test.describe('Home Page Tests', () => {
+  let radioButtonsPage: RadioButtonsPage;
 
-  // Elements
-  const radioButtonGroup = page.getByTestId('triple-option-radio-group');
-  const option1 = radioButtonGroup.locator('div').filter({ hasText: 'Option One' }).getByRole('radio');
-  const option2 = radioButtonGroup.locator('div').filter({ hasText: 'Option Two' }).getByRole('radio');
-  const option3 = radioButtonGroup.locator('div').filter({ hasText: 'Option Three' }).getByRole('radio');
-  const selectedOptionText = radioButtonGroup.locator('#selectedOption');
-  await expect(radioButtonGroup).toBeVisible();
+test.beforeEach(async ({ page }) => {
+    radioButtonsPage = new RadioButtonsPage(page);
+    await page.goto('/public/radio-buttons');
+    // Expect heading to be visible
+    await expect(radioButtonsPage.header).toBeVisible();
+    await expect(radioButtonsPage.header).toHaveText('Radio buttons')
+});
+
+test('Triple option selection', async ({ page }) => {
+  
+  await expect(radioButtonsPage.tripleOptionSection).toBeVisible();
   // Select the first radio button
-  await option1.check();
-  await expect(option1).toBeChecked();
-  await expect(option2).not.toBeChecked();
-  await expect(option3).not.toBeChecked();
-  await expect(selectedOptionText).toHaveText('Selected item:Option One');
+  await radioButtonsPage.tripleOptionRadioButton1.check();
+  await expect(radioButtonsPage.tripleOptionRadioButton1).toBeChecked();
+  await expect(radioButtonsPage.tripleOptionRadioButton2).not.toBeChecked();
+  await expect(radioButtonsPage.tripleOptionRadioButton3).not.toBeChecked();
+  await expect(radioButtonsPage.tripleOptionResult).toHaveText('Selected item:Option One');
 
   // Select the second radio button
-  await option2.check();
-  await expect(option1).not.toBeChecked();
-  await expect(option2).toBeChecked();
-  await expect(option3).not.toBeChecked();
-  await expect(selectedOptionText).toHaveText('Selected item:Option Two');
+  await radioButtonsPage.tripleOptionRadioButton2.check();
+  await expect(radioButtonsPage.tripleOptionRadioButton1).not.toBeChecked();
+  await expect(radioButtonsPage.tripleOptionRadioButton2).toBeChecked();
+  await expect(radioButtonsPage.tripleOptionRadioButton3).not.toBeChecked();
+  await expect(radioButtonsPage.tripleOptionResult).toHaveText('Selected item:Option Two');
 
   // Select the third radio button
-  await option3.check();
-  await expect(option1).not.toBeChecked();
-  await expect(option2).not.toBeChecked();
-  await expect(option3).toBeChecked();
-  await expect(selectedOptionText).toHaveText('Selected item:Option Three');
+  await radioButtonsPage.tripleOptionRadioButton3.check();
+  await expect(radioButtonsPage.tripleOptionRadioButton1).not.toBeChecked();
+  await expect(radioButtonsPage.tripleOptionRadioButton2).not.toBeChecked();
+  await expect(radioButtonsPage.tripleOptionRadioButton3).toBeChecked();
+  await expect(radioButtonsPage.tripleOptionResult).toHaveText('Selected item:Option Three');
   
 
 });
 
-test('Radio buttons - Default value selection', async ({ page }) => {
-  await page.goto('public/radio-buttons');
+test('Default value selection', async ({ page }) => {
+  
 
-  // Elements
-  const defaultRadioGroup = page.getByRole('radiogroup').filter({ has: page.getByRole('heading', { name: 'Default option' }) });
-  const yesOption = defaultRadioGroup.locator('div').filter({ hasText: 'Yes' }).getByRole('radio');
-  const noOption = defaultRadioGroup.locator('div').filter({ hasText: 'No' }).getByRole('radio');
-  const selectedOptionText = defaultRadioGroup.locator('#selectedOptionTwo');
-
-  await expect(defaultRadioGroup).toBeVisible();
-  await expect(yesOption).toBeVisible();
-  await expect(noOption).toBeVisible();
+  await expect(radioButtonsPage.defaultOptionSection).toBeVisible();
+  await expect(radioButtonsPage.defaultOptionRadioButtonYes).toBeVisible();
+  await expect(radioButtonsPage.defaultOptionRadioButtonNo).toBeVisible();
 
   // Check the default value
-  await expect(yesOption).not.toBeChecked();
-  await expect(noOption).toBeChecked();
+  await expect(radioButtonsPage.defaultOptionRadioButtonYes).not.toBeChecked();
+  await expect(radioButtonsPage.defaultOptionRadioButtonNo).toBeChecked();
   
   // Select the "Yes" option
-  await yesOption.check();
-  await expect(yesOption).toBeChecked();
-  await expect(noOption).not.toBeChecked();
-  await expect(selectedOptionText).toHaveText('Selected item:Yes');
+  await radioButtonsPage.defaultOptionRadioButtonYes.check();
+  await expect(radioButtonsPage.defaultOptionRadioButtonYes).toBeChecked();
+  await expect(radioButtonsPage.defaultOptionRadioButtonNo).not.toBeChecked();
+  await expect(radioButtonsPage.defaultOptionResult).toHaveText('Selected item:Yes');
 });
 
-test('Radio buttons - Double option with button', async ({ page }) => {
-  await page.goto('public/radio-buttons');
-
-  // Elements
-  const doubleOptionGroup = page.getByTestId('double-option-radio-group-1');
-  const option1 = doubleOptionGroup.locator('div').filter({ hasText: 'Option One' }).getByRole('radio');
-  const option2 = doubleOptionGroup.locator('div').filter({ hasText: 'Option Two' }).getByRole('radio');
-  const option3 = doubleOptionGroup.locator('div').filter({ hasText: 'Option Three' }).getByRole('radio');
-  const doubleOptionGroup2 = page.getByTestId('double-option-radio-group-2');
-  const optionYes = doubleOptionGroup2.locator('div').filter({ hasText: 'Yes' }).getByRole('radio');    
-  const optionNo = doubleOptionGroup2.locator('div').filter({ hasText: 'No' }).getByRole('radio');
-  const submitButton = page.getByRole('button', { name: 'Submit' });
-  const selectedOptionThree = page.locator('#selectedOptionThree');
-
-  await expect(doubleOptionGroup).toBeVisible();
-  await expect(option1).toBeVisible();
-  await expect(option2).toBeVisible();
-  await expect(option3).toBeVisible();
-  await expect(doubleOptionGroup2).toBeVisible();
-  await expect(optionYes).toBeVisible();
-  await expect(optionNo).toBeVisible();
+test('Double option with button', async ({ page }) => {
+  
+  await expect(radioButtonsPage.doubleGroup1Section).toBeVisible();
+  await expect(radioButtonsPage.doubleGroup1RadioButton1).toBeVisible();
+  await expect(radioButtonsPage.doubleGroup1RadioButton2).toBeVisible();
+  await expect(radioButtonsPage.doubleGroup1RadioButton3).toBeVisible();
+  await expect(radioButtonsPage.doubleGroup2Section).toBeVisible();
+  await expect(radioButtonsPage.doubleGroup2RadioButtonYes).toBeVisible();
+  await expect(radioButtonsPage.doubleGroup2RadioButtonNo).toBeVisible();
 
   // Select the first radio button
-  await option1.check();
-  await expect(option1).toBeChecked();
-  await expect(option2).not.toBeChecked();
-  await expect(option3).not.toBeChecked();
+  await radioButtonsPage.doubleGroup1RadioButton1.check();
+  await expect(radioButtonsPage.doubleGroup1RadioButton1).toBeChecked();
+  await expect(radioButtonsPage.doubleGroup1RadioButton2).not.toBeChecked();
+  await expect(radioButtonsPage.doubleGroup1RadioButton3).not.toBeChecked();
 
   // Select the second radio button
-  await option2.check();
-  await expect(option1).not.toBeChecked();
-  await expect(option2).toBeChecked();
-  await expect(option3).not.toBeChecked();
+  await radioButtonsPage.doubleGroup1RadioButton2.check();
+  await expect(radioButtonsPage.doubleGroup1RadioButton1).not.toBeChecked();
+  await expect(radioButtonsPage.doubleGroup1RadioButton2).toBeChecked();
+  await expect(radioButtonsPage.doubleGroup1RadioButton3).not.toBeChecked();
 
   //Select Yes option
-  await optionYes.check();
-  await expect(optionYes).toBeChecked();
-  await expect(optionNo).not.toBeChecked();
+  await radioButtonsPage.doubleGroup2RadioButtonYes.check();
+  await expect(radioButtonsPage.doubleGroup2RadioButtonYes).toBeChecked();
+  await expect(radioButtonsPage.doubleGroup2RadioButtonNo).not.toBeChecked();
 
   // Submit the form
-  await submitButton.click();
+  await radioButtonsPage.doubleGroupSubmitButton.click();
 
   // Check results
-  await expect(selectedOptionThree).toHaveText('Options selected: Option TwoYes/No selected: Yes ');
+  await expect(radioButtonsPage.doubleGroupResult).toHaveText('Options selected: Option TwoYes/No selected: Yes ');
+});
 });

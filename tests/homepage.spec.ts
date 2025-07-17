@@ -1,55 +1,64 @@
 import { test, expect } from '@playwright/test';
+import { Homepage } from './pom/homepage';
+import { HamburgerMenu } from './pom/hamburger';
 
-test('Home page elements visible', async ({ page }) => {
-  await page.goto('/');
+test.describe('Home Page Tests', () => {
+  let homepage: Homepage;
+  let hamburgerMenu: HamburgerMenu;
 
-  // Expect logo to be visible
-  await expect(page.getByRole('img', { name: 'Hawes logo' })).toBeVisible();
-  // Expect Hamburger menu to be visible
-  await expect(page.getByRole('img', { name: 'menu' })).toBeVisible();
-  // Expect dark mode toggle to be visible
-  await expect(page.locator('#darkModeToggle')).toBeVisible();
+test.beforeEach(async ({ page }) => {
+    homepage = new Homepage(page);
+    hamburgerMenu = new HamburgerMenu(page);
+    await page.goto('/');
+    // Expect logo to be visible
+    await expect(homepage.logo).toBeVisible();
+    // Expect Hamburger menu to be visible
+    await expect(homepage.hamburger).toBeVisible();
+    // Expect dark mode toggle to be visible
+    await expect(homepage.darkModeToggle).toBeVisible();
 });
 
-test('Home page - Dark mode toggle works', async ({ page }) => {
-    await page.goto('/');
+
+test('Dark mode toggle works', async ({ page }) => {
+
     await page.evaluate(() => document.documentElement.classList.remove('dark')); // Ensure dark mode is off initially
     // Click on the dark mode toggle
-    await page.locator('#darkModeToggle').click();
+    await homepage.darkModeToggle.click();
     // Check if the dark mode class is added to the document element
     const isDarkMode = await page.evaluate(() => document.documentElement.classList.contains('dark'));
     expect(isDarkMode).toBe(true);
     // Check if the toggle icon changes back to light mode icon
-    expect(await page.locator('#darkModeToggle').innerHTML()).toContain('\u263C'); // This is the Unicode for the sun icon
+    expect(await homepage.darkModeToggle.innerHTML()).toContain('\u263C'); // This is the Unicode for the sun icon
     // Click again to toggle back to light mode
-    await page.locator('#darkModeToggle').click();
+    await homepage.darkModeToggle.click();
     // Check if the dark mode class is removed from the document element
     const isLightMode = await page.evaluate(() => !document.documentElement.classList.contains('dark'));
     expect(isLightMode).toBe(true);
     // Check if the toggle icon changes back to dark mode icon
-    expect(await page.locator('#darkModeToggle').innerHTML()).toContain('\u263D'); // This is the Unicode for the moon icon
+    expect(await homepage.darkModeToggle.innerHTML()).toContain('\u263D'); // This is the Unicode for the moon icon
 });
 
-test('Home page - Hamburger menu opens and closes', async ({ page }) => {
-    await page.goto('/');
+test('Hamburger menu opens and closes', async ({ page }) => {
+    
     // Click on the hamburger menu
-    await page.getByRole('img', { name: 'menu' }).click();
+    await hamburgerMenu.hamburger.click();
     // Check if the menu is visible
-    await expect(page.locator('#hamburgerMenuItems')).toBeVisible();
+    await expect(hamburgerMenu.hamburgerMenuItems).toBeVisible();
     // Click again to close the menu
-    await page.getByRole('img', { name: 'menu' }).click();
+    await hamburgerMenu.hamburger.click();
     // Check if the menu is no longer visible
-    await expect(page.locator('hamburgerMenuItems')).toBeHidden();
+    await expect(hamburgerMenu.hamburgerMenuItems).toBeHidden();
     // Check if the menu button is still visible
-    await expect(page.getByRole('img', { name: 'menu' })).toBeVisible();
+    await expect(hamburgerMenu.hamburger).toBeVisible();
     // Check if the menu closes when clicking outside
-    await page.getByRole('img', { name: 'menu' }).click();
-    await expect(page.locator('#hamburgerMenuItems')).toBeVisible();
+    await hamburgerMenu.hamburger.click();
+    await expect(hamburgerMenu.hamburgerMenuItems).toBeVisible();
     await page.click('body'); // Click outside the menu
     // Check if the menu is no longer visible
-    await expect(page.locator('#hamburgerMenuItems')).toBeHidden();
+    await expect(hamburgerMenu.hamburgerMenuItems).toBeHidden();
 
     // Check if the menu button is still enabled
-    const isMenuButtonEnabled = await page.getByRole('img', { name: 'menu' }).isEnabled();
+    const isMenuButtonEnabled = await hamburgerMenu.hamburger.isEnabled();
     expect(isMenuButtonEnabled).toBe(true);
+});
 });

@@ -103,6 +103,11 @@ label {
   font-size: 1.0em;
 }
 
+/*.challenge-chevron svg {
+  margin-left: 0.5rem; 
+  align-self: flex-start;
+}*/
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);

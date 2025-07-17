@@ -1,5 +1,4 @@
 import { Page, Locator } from "@playwright/test";
-import { th } from "date-fns/locale";
 
 export class CheckboxPage {
     readonly page: Page;
