@@ -3,7 +3,7 @@ import { Page, Locator } from "@playwright/test";
 export class RadioButtonsPage {
     readonly page: Page;
     readonly header: Locator;
-    readonly challenge: Locator;
+    //readonly challenge: Locator;
     // Triple option group
     readonly tripleOptionSection: Locator;
     readonly tripleOptionRadioButton1: Locator;

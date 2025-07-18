@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+ 
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.53.0-jammy
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+    environment:
+      - HOME=/workspace
+      - PLAYWRIGHT_BASE_URL=https://192.168.1.137:443
+      - PLAYWRIGHT_REPORTER=line
+    command: sh -c "npx playwright test"
