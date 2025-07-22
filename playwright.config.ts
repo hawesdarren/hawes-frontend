@@ -32,6 +32,8 @@ export default defineConfig({
     trace: 'on-first-retry',
     // Capture screenshot after each test failure.
     screenshot: 'only-on-failure',
+    // Ignore HTTPS certs errors
+    ignoreHTTPSErrors: true,
   },
 
   /* Configure projects for major browsers */

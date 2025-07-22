@@ -53,15 +53,15 @@ test.describe('Tables Tests', () => {
 
         test.beforeEach(async ({ page }) => {
             
-            tablesPage = new TablesPage(page)
-
             await page.goto('/public/tables')
+            tablesPage = new TablesPage(page)
             await expect(tablesPage.header).toHaveText('Tables')
             await expect(tablesPage.paymentsTable).toBeVisible();
             await expect(tablesPage.dobTable).toBeVisible();
         });
 
         test(`Payments contains payment Mojo's coffe $7.50`, async ({ page }) => {
+            
             // Find row that have mojos coffee
             const MojosRows = page.getByRole('row').filter({hasText: `Mojos's`})
             expect(MojosRows).toHaveCount(2)
@@ -72,6 +72,7 @@ test.describe('Tables Tests', () => {
         });
 
         test(`Payments contains two payments to Mojo's coffe`, async ({ page }) => {
+             
             // Find row that have mojos coffee
             const MojosRows = page.getByRole('row').filter({hasText: `Mojos's`})
             expect(MojosRows).toHaveCount(2)
@@ -79,6 +80,7 @@ test.describe('Tables Tests', () => {
         });
 
           test(`Payments contains two payments for $7.50`, async ({ page }) => {
+            
             // Find row that have mojos coffee
             const MojosRows = page.getByRole('row').filter({hasText: `$7.50`})
             expect(MojosRows).toHaveCount(2)
@@ -95,6 +97,8 @@ test.describe('Tables Tests', () => {
 
             // Click the button to sort the table A-Z
             await tablesPage.firstName.click();
+            // Wait for table to sort
+            await page.waitForTimeout(1000);
             // Get the first names from the table 
             const firstNamesSorted: string[] = await getFirstNames(rows);
             // Compare the list
@@ -102,6 +106,8 @@ test.describe('Tables Tests', () => {
 
             // Reverse the sort order Z-A
             await tablesPage.firstName.click();
+            // Wait for table to sort
+            await page.waitForTimeout(1000);
             // Get the first names from the table
             const firstNamesResverseSorted: string[] = await getFirstNames(rows);
             // Sort the stored list of names Z-A
@@ -121,6 +127,8 @@ test.describe('Tables Tests', () => {
 
             // Click Last name button to sort A-Z
             await tablesPage.lastName.click();
+            // Wait for table to sort
+            await page.waitForTimeout(1000);
             // Get the last names from the table
             const lastNamesAZ = await getLastNames(rows);
             // Compare the list
@@ -128,6 +136,8 @@ test.describe('Tables Tests', () => {
 
             // Click the last name buton to sort Z-A
             await tablesPage.lastName.click();
+            // Wait for table to sort
+            await page.waitForTimeout(1000);
             // Get the last names from the table
             const lastNamesZA = await getLastNames(rows)
             // Sort Z-A original list
@@ -138,14 +148,19 @@ test.describe('Tables Tests', () => {
         });
 
         test(`DoB filter by DoB`, async ({ page }) => {
+            // wait for page to load - need local formatting to take effect
+            await page.waitForTimeout(1000)
             // Get the table body and then get all the last names
             const rows = await tablesPage.dobBody.getByRole('row').all();
             // Get the DoB from the table
-            const dob = await getDoB(rows)
-            // Sort A-Z
+            let dob = await getDoB(rows)
+            dob = dob.map(d => typeof d === 'string' ? new Date(d) : d);
+            // Sort date asc
             dob.sort((a, b) => a.getTime() - b.getTime());
             // Click the Date of birth button to Sort 0-9
             await tablesPage.dob.click();
+            // Wait for table to sort
+            await page.waitForTimeout(1000);
             // Get the DoB from the table
             const dob09 = await getDoB(rows);
             // Compare
@@ -153,6 +168,8 @@ test.describe('Tables Tests', () => {
 
             // Click the DoB button to sort table 9-0
             await tablesPage.dob.click();
+            // Wait for table to sort
+            await page.waitForTimeout(1000);
             // Get the DoB from the table
             const dob90 = await getDoB(rows);
             // Sort the original list 9-0

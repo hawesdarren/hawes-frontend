@@ -1,12 +1,13 @@
 import { test, expect } from '@playwright/test';
 import  { RadioButtonsPage } from './pom/radioButtons'
 
-test.describe('Home Page Tests', () => {
+test.describe('Radio button tests', () => {
   let radioButtonsPage: RadioButtonsPage;
 
 test.beforeEach(async ({ page }) => {
-    radioButtonsPage = new RadioButtonsPage(page);
+
     await page.goto('/public/radio-buttons');
+    radioButtonsPage = new RadioButtonsPage(page);
     // Expect heading to be visible
     await expect(radioButtonsPage.header).toBeVisible();
     await expect(radioButtonsPage.header).toHaveText('Radio buttons')
@@ -88,6 +89,6 @@ test('Double option with button', async ({ page }) => {
   await radioButtonsPage.doubleGroupSubmitButton.click();
 
   // Check results
-  await expect(radioButtonsPage.doubleGroupResult).toHaveText('Options selected: Option TwoYes/No selected: Yes ');
+  await expect(radioButtonsPage.doubleGroupResult).toHaveText('Options selected: Option Two\nYes/No selected: Yes ');
 });
 });
