@@ -1,83 +1,107 @@
 'use client'
 
-import Header from '../../components/header'
+import React, { useState } from 'react'
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-
-var radioThreeValue: string | undefined  
-var radioThreeSecondValue: string | undefined 
-
-function setTripleOptionResult(itemValue: string) {
-  //Get the label for the value selected
-  const label = document.querySelector(`label[for="${itemValue}"]`);
-  if (label) {
-    // Set the text of the paragraph to the label text              
-    document.getElementById('selectedOption')!.innerText = 'Selected item:\n' + label.textContent;
-  }
-}
-
-function setDefaultOptionResult(itemValue: string) {
-    //Get the label for the value selected
-    const label = document.querySelector(`label[for="${itemValue}"]`);
-    if (label) {
-      // Set the text of the paragraph to the label text              
-      document.getElementById('selectedOptionTwo')!.innerText = 'Selected item:\n' + label.textContent;
-    }
-  }
-
-function buttonClicked(){
-    //Get the radio group-1
-    const radioOptionGroup = document.querySelector('div[data-testid="double-option-radio-group-1"]')
-    // Get the selected option values
-    const selectValueButton = radioOptionGroup?.querySelector('button[data-state="checked"]') as HTMLButtonElement | null
-    const selectedValue  = selectValueButton?.value
-    //Get label for selected options
-    const selectValueLabels = document.querySelector(`label[for="${selectedValue}"]`)
-    // Get the radio group-2
-    const radioOptionGroupTwo = document.querySelector('div[data-testid="double-option-radio-group-2"]')
-    // Get the selected option values
-    const selectValueButtonTwo = radioOptionGroupTwo?.querySelector('button[data-state="checked"]') as HTMLButtonElement | null
-    const selectedValueTwo  = selectValueButtonTwo?.value
-    //Get label for selected options
-    const selectValueLabelsTwo = document.querySelector(`label[for="${selectedValueTwo}"]`)
-    // Set the text of the paragraph to the label text
-    
-    document.getElementById('selectedOptionThree')!.innerText = "Options selected: " + selectValueLabels?.textContent + "\n"
-    document.getElementById('selectedOptionThree')!.innerText += "Yes/No selected: " + selectValueLabelsTwo?.textContent + "\n"
-}
 
 export default function Page(this: any) {
 
+    // State for each radio group
+    const [tripleOption, setTripleOption] = useState<string | undefined>(undefined)
+    const [defaultOption, setDefaultOption] = useState<string>('no')
+    const [doubleOption, setDoubleOption] = useState<string | undefined>(undefined)
+    const [doubleYesNo, setDoubleYesNo] = useState<string | undefined>(undefined)
+    const [doubleResult, setDoubleResult] = useState<string>('')
+
+    // Helper to get label text by value for a given group
+    const getLabel = (group: { value: string, label: string }[], value?: string) =>
+    group.find(opt => opt.value === value)?.label ?? ''
+
+    // Options for each group
+    const tripleOptions = [
+        { value: 'option-1', label: 'Option One' },
+        { value: 'option-2', label: 'Option Two' },
+        { value: 'option-3', label: 'Option Three' },
+    ]
+    const defaultOptions = [
+        { value: 'yes', label: 'Yes' },
+        { value: 'no', label: 'No' },
+    ]
+    const doubleOptions = [
+        { value: 'double-option-1', label: 'Option One' },
+        { value: 'double-option-2', label: 'Option Two' },
+        { value: 'double-option-3', label: 'Option Three' },
+    ]
+    const doubleYesNoOptions = [
+        { value: 'double-option-yes', label: 'Yes' },
+        { value: 'double-option-no', label: 'No' },
+    ]
+
+    // Handler for submit button
+    const handleDoubleSubmit = () => {
+        const selectedOption = getLabel(doubleOptions, doubleOption)
+        const selectedYesNo = getLabel(doubleYesNoOptions, doubleYesNo)
+        setDoubleResult(
+        `Options selected: ${selectedOption}\nYes/No selected: ${selectedYesNo}`
+        )
+    }
+
   return (
 
-<div className="grid grid-cols-[1fr_8fr_1fr] sm:grid-cols-[1fr_1fr_1fr] p-6 gap-3 ">
+<div className="grid grid-cols-[1fr_8fr_1fr] sm:grid-cols-[1fr_2fr_1fr] p-6 gap-3 ">
       <div className="grid col-start-1 col-span-3">
-        <p>The challenge is to use the radio buttons</p>
+        <Accordion type="single" collapsible>
+        <AccordionItem value='item1'>
+          <AccordionTrigger className="challenge-chevron">The challenge...</AccordionTrigger>
+          <AccordionContent>
+            <h4>State Management & Isolation</h4>
+            <p>Each radio group manages its own state. Tests must ensure that selecting an option in one group does not affect the others. Resetting state between tests is crucial to avoid flaky results.</p>
+            <h4>Radio Button Accessibility</h4>
+            <p>The custom radio components (`RadioGroup`, `RadioGroupItem`) may not use native HTML elements, so verifying accessibility (keyboard navigation, screen reader support, correct labeling) is more complex.</p>
+            <h4>Dynamic Content Verification</h4>
+            <p>The selected option labels are shown dynamically. Tests must reliably query and assert these updates, which may require waiting for React state updates.</p>
+            <h4>Multiple Groups with Similar Structure</h4>
+            <p>There are several radio groups with similar markup and labels. Test selectors (like `data-testid`) are needed to uniquely identify and interact with each group, or else tests may become brittle or ambiguous.</p>
+            <h4>Compound Interactions</h4>
+            <p>The "Double option with button" section requires selecting from two groups and clicking a button to see a result. Tests must simulate multi-step user flows and verify the composed output.</p>
+            <h4>Default Values</h4>
+            <p>Some groups have default selections. Tests must check both the initial state and state after user interaction.</p>
+            <h4>Edge Cases</h4>
+            <p>Tests should cover cases where no option is selected, or only one of the two required options is chosen before clicking "Submit".</p>
+            <h4>Styling and Layout</h4>
+            <p>While not strictly functional, verifying that the layout and spacing are correct across screen sizes may require visual regression testing.</p>
+            <h4>Test Flakiness</h4>
+            <p>Asynchronous state updates and UI rendering may cause timing issues in tests, requiring careful use of async utilities and selectors.</p>
+            <h4>Summary</h4>
+            <p>Testing this page requires careful handling of state, selectors, and user flows, as well as attention to accessibility and asynchronous updates. Robust test IDs and cleanup between tests are essential.</p>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
       </div>
       
       <div className="valueChange grid col-start-2 place-items-start">
         
         <RadioGroup  
             data-testid="triple-option-radio-group"
-            onValueChange={itemValue => setTripleOptionResult(itemValue)}
+            value={tripleOption}
+            onValueChange={setTripleOption}
              >
             <h2>Triple option</h2>
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="option-1"/>
-                <Label htmlFor="option-1">Option One</Label>
+             {tripleOptions.map(opt => (
+            <div className="flex p-2 gap-x-3" key={opt.value}>
+              <RadioGroupItem value={opt.value} />
+              <Label htmlFor={opt.value}>{opt.label}</Label>
             </div>
+            ))}
             <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="option-2"/>
-                <Label htmlFor="option-2">Option Two</Label>
-            </div>
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="option-3"/>
-                <Label htmlFor="option-3">Option Three</Label>
-            </div>
-            <div className="flex p-2 gap-x-3">
-                <p id="selectedOption"></p>
+                <p id="selectedOption">
+              {tripleOption && (
+                <>Selected item:<br />{getLabel(tripleOptions, tripleOption)}</>
+              )}
+            </p>
             </div>
         </RadioGroup>
       </div>
@@ -85,21 +109,23 @@ export default function Page(this: any) {
       
         <RadioGroup  
             //value={selectedValue} 
-            defaultValue='no'
-            onValueChange={itemValue => setDefaultOptionResult(itemValue)}
+            value={defaultOption}
+            onValueChange={setDefaultOption}
             >
             <h2>Default option</h2>
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="yes"/>
-                <Label htmlFor="yes">Yes</Label>
+            {defaultOptions.map(opt => (
+            <div className="flex p-2 gap-x-3" key={opt.value}>
+              <RadioGroupItem value={opt.value} />
+              <Label htmlFor={opt.value}>{opt.label}</Label>
             </div>
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="no"/>
-                <Label htmlFor="no">No</Label>
-            </div>
+            ))}
             
             <div className="flex p-2 gap-x-3">
-                <p id="selectedOptionTwo"></p>
+                <p id="selectedOptionTwo">
+              {defaultOption && (
+                <>Selected item:<br />{getLabel(defaultOptions, defaultOption)}</>
+              )}
+            </p>
             </div>
         </RadioGroup>
       </div>
@@ -107,44 +133,40 @@ export default function Page(this: any) {
       <h2>Double option with button</h2>
       <p>Select options</p>
       <RadioGroup  
-            onValueChange={selectedValue => {radioThreeValue = selectedValue}}
+            value={doubleOption}
+            onValueChange={setDoubleOption}
             data-testid="double-option-radio-group-1"
             >
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="double-option-1"/>
-                <Label htmlFor="double-option-1">Option One</Label>    
+            {doubleOptions.map(opt => (
+            <div className="flex p-2 gap-x-3" key={opt.value}>
+              <RadioGroupItem value={opt.value} />
+              <Label htmlFor={opt.value}>{opt.label}</Label>
             </div>
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="double-option-2"/>
-                <Label htmlFor="double-option-2">Option Two</Label>
-            </div>
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="double-option-3"/>
-                <Label htmlFor="double-option-3">Option Three</Label>
-            </div>
+            ))}
             
         </RadioGroup>
         <p>Select yes or no</p>
         <RadioGroup  
-            onValueChange={selectedValue => {radioThreeSecondValue = selectedValue}}
+            value={doubleYesNo}
+            onValueChange={setDoubleYesNo}
             data-testid="double-option-radio-group-2"
             >
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="double-option-yes"/>
-                <Label htmlFor="double-option-yes">Yes</Label>    
+            {doubleYesNoOptions.map(opt => (
+            <div className="flex p-2 gap-x-3" key={opt.value}>
+              <RadioGroupItem value={opt.value} />
+              <Label htmlFor={opt.value}>{opt.label}</Label>
             </div>
-            <div className="flex p-2 gap-x-3">
-                <RadioGroupItem value="double-option-no"/>
-                <Label htmlFor="double-option-no">No</Label>
-            </div>
+            ))}
             
         </RadioGroup>
         <p>Confirm options</p>
         <div>
-            <Button onClick={buttonClicked}>Submit</Button>
+            <Button onClick={handleDoubleSubmit}>Submit</Button>
         </div>
         <div className="flex p-2 gap-x-3">
-                <p id="selectedOptionThree"></p>
+            <p id="selectedOptionThree" style={{ whiteSpace: 'pre-line' }}>
+                {doubleResult}
+            </p>
         </div>
       </div>
       
