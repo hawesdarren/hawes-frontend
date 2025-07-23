@@ -3,5 +3,5 @@ FROM mcr.microsoft.com/playwright:v1.53.0-jammy as playwright
 WORKDIR /app
 
 COPY . .
-RUN npm ci
+RUN npm install
 ENTRYPOINT npx playwright test
