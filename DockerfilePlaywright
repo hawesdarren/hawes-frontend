@@ -4,4 +4,3 @@ WORKDIR /app
 
 COPY . .
 RUN npm ci
-ENTRYPOINT npx playwright test
