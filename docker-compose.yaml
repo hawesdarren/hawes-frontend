@@ -1,7 +1,6 @@
 services:
   playwright:
-    build: 
-      dockerfile: DockerfilePlaywright
+    image: hawes-playwright-image
     container_name: playwright
     volumes:
       - ./:/workspace
