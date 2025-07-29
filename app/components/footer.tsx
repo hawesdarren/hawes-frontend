@@ -11,7 +11,7 @@ export default function Footer() {
                 <Link href="mailto:contact@hawes.co.nz">Contact</Link>
             </div>
             <div className="col-start-3 justify-self-end">
-                <Link href="/privacy-policy">Privacy Policy</Link>
+                <Link href="/public/faq">FAQ</Link>
             </div>
         </footer>
     )};
