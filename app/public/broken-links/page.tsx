@@ -1,15 +1,12 @@
 'use client'
 
-import Image from "next/image";
 import Link from 'next/link';
-import From from 'next/form';
-import Header from '../../components/header'
 import dynamic from 'next/dynamic';
 
-const BrokenImages = dynamic(() => import('../../components/brokenImages'), { ssr: false })
+//const BrokenImages = dynamic(() => import('../../components/brokenImages'), { ssr: false })
 
 export default function Page() {
-  
+const BrokenImages = dynamic(() => import('../../components/brokenImages'), { ssr: false })
   return (
 
 <div className="grid p-6 gap-3">
