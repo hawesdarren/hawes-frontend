@@ -15,7 +15,8 @@ export default function HamburgerMenu() {
         { name: 'Radio buttons', href: '/public/radio-buttons' },
         { name: 'Checkboxes', href: '/public/checkbox' },
         { name: 'Calendar', href: '/public/calendar' },
-        { name: 'Tables', href: '/public/tables' }
+        { name: 'Tables', href: '/public/tables' },
+        { name: 'Collapsible', href: '/public/collapsible' }
     ];
 
     const sortAlphabetically = (a: { name: string; }, b: { name: string; }) => {
