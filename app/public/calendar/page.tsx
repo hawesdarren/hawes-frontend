@@ -39,7 +39,7 @@ export default function Page(this: any) {
 
     return (
         <div className='grid grid-cols-[1fr_8fr_1fr] p-6 gap-3 '>
-            <div className="grid grid-rows-1 col-start-2">
+            <div className="grid grid-rows-1 col-start-1 col-span-3">
                 <div>                 
                     <Accordion type="single" collapsible>
                         <AccordionItem value='item1'>
@@ -89,7 +89,7 @@ export default function Page(this: any) {
                     </Accordion>
                            
                 </div>
-                <div className="sm:flex flex-row flex-wrap flex-auto gap-5 justify-items-center">
+                <div className="sm:flex flex-row flex-wrap flex-auto gap-5 justify-items-center col-start-1 row-start-2">
                     <div>
                         <div className="grid max-w-70">
                             <div>
