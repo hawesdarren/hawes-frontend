@@ -73,7 +73,7 @@ test('Multiple checkboxes', async ({ page }) => {
 
     // Confirm that the results are displayed correctly
     await expect(checkboxPage.multipleCheckboxesResult).toBeVisible();
-    await expect(checkboxPage.multipleCheckboxesResult).toHaveText('Options selected:Option 2Option 3'); //Playwright removes extar whitespace and line breaks
+    await expect(checkboxPage.multipleCheckboxesResult).toHaveText('Selected options:Option 2Option 3'); //Playwright removes extar whitespace and line breaks
 });
 
 test("Select any two checkboxes", async ({ page }) => {
