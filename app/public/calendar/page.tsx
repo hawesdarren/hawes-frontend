@@ -104,7 +104,7 @@ export default function Page(this: any) {
                                     onSelect={(date) => {
                                     setDate(date);
                                 }}
-                                className="rounded-lg border shadow-sm"
+                                className="rounded-lg border shadow-sm text-(--text-color)"
                                 />
                             </div>
                             <div>
@@ -131,7 +131,7 @@ export default function Page(this: any) {
                                 onSelect={(date) => {
                                     setDob(date);
                                     }}
-                            className="rounded-lg border shadow-sm"
+                            className="rounded-lg border shadow-sm text-(--text-color)"
                             />
                         </div>
                         <div>
@@ -154,7 +154,7 @@ export default function Page(this: any) {
                                 onSelect={(range) => {
                                     setDateRange(range || { from: new Date(), to: new Date() });
                                 }}
-                            className="rounded-lg border shadow-sm"
+                            className="rounded-lg border shadow-sm text-(--text-color)"
                             />
                         </div>
                         <div className="grid col-start-2">
@@ -193,6 +193,7 @@ export default function Page(this: any) {
                                             }
                                         }}
                                         //disabled
+                                        className="text-(--text-color)"
                                     />
                                     <Popover
                                         open={open}
@@ -232,7 +233,7 @@ export default function Page(this: any) {
                                                     setInputDateMonth(month);
                                                 }}
                           
-                                                className="rounded-lg border shadow-sm"
+                                                className="rounded-lg border shadow-sm text-(--text-color)"
                                             />
                                         </PopoverContent>
                                     </Popover>
@@ -264,7 +265,7 @@ export default function Page(this: any) {
                                                 setButtonDateOpen(false);
                                             }}
                                             
-                                            //className="mt-2"
+                                            className="text-(--text-color)"
                                             >
                                             {buttonDate ? formatDate(buttonDate) : "Set current date"}
                                             <Calendar1Icon />
@@ -272,7 +273,7 @@ export default function Page(this: any) {
                                             </Button>
                                         </PopoverTrigger>
                                         <PopoverContent 
-                                            className="w-auto overflow-hidden p-0"
+                                            className="w-auto overflow-hidden p-0 "
                                             align="end"
                                             alignOffset={-8}
                                             sideOffset={10}
@@ -292,7 +293,7 @@ export default function Page(this: any) {
                                                     setButtonDateMonth(month);
                                                 }}
                                                 month={buttonDateMonth} 
-                                                className="rounded-lg border shadow-sm"
+                                                className="rounded-lg border shadow-sm text-(--text-color)"
                                             />
                                         </PopoverContent>
                                     </Popover>

@@ -35,7 +35,7 @@ export default function Page(this: any) {
         <div className="grid col-start-1 col-span-3">            
                 <div>
                     <Collapsible>
-                        <div className="flex flex-col items-start gap-2">
+                        <div className="flex flex-col items-start gap-2 text-(--text-color)">
                             <CollapsibleTrigger>Read more...</CollapsibleTrigger>
                             <CollapsibleContent>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu ullamcorper eros. Fusce metus libero, rutrum eget bibendum quis, iaculis vitae leo.</CollapsibleContent>
                             <CollapsibleContent>Etiam ultricies orci commodo ligula ornare tempus in a dui. Aenean at metus a risus commodo accumsan et at ex. Nullam scelerisque accumsan suscipit.</CollapsibleContent>

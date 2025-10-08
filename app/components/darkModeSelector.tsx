@@ -37,7 +37,12 @@ export default function DarkMode() {
     }   
 
     return (
-        <div onClick={toggleDarkMode} className="cursor-pointer m-1" id="darkModeToggle" data-testid="darkModeToggle">            
+        <div onClick={toggleDarkMode} className="cursor-pointer m-1" id="darkModeToggle" data-testid="darkModeToggle" 
+            tabIndex={0} onKeyDown={e => {
+                if (e.key === "Enter" || e.key === " ") {
+                    toggleDarkMode();
+                }
+            }}>
                 {isDarkMode ? <h4>&#9788;</h4> : <h4>&#9789;</h4>}
         </div>
     )

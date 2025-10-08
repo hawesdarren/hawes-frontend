@@ -2,32 +2,48 @@
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"
-import { JSX, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
 
 
 
 export default function Page(this: any) {
 
+    const [tAndCChecked, setTAndCChecked] = useState(false);
+    const [optInChecked, setOptInChecked] = useState(true);
+    const multiOptions: readonly string[] = ['Option 1', 'Option 2', 'Option 3'];
+    const [multiChecked, setMultiChecked]:any[] = useState(Array(multiOptions.length).fill(false));
     const options: readonly string[] = ['Option 1','Option 2','Option 3','Option 4','Option 5', ]
     const [isChecked, setIsChecked]:any[] = useState(Array(options.length).fill(false))
     const optionsAll: readonly string[] = ['Option 1','Option 2','Option 3','Option 4','Option 5', ]
     const [isCheckedAll, setIsCheckedAll]:any[] = useState(Array(optionsAll.length).fill(false))
     const router = useRouter()
 
-    function multipleOptResult(){
-        //Get the elements for the multi checkbox
-        var elements = document.getElementsByClassName('multiCheckbox')
-        //Loop over elements
-        var i = 0;
-        var strResult = 'Options selected:\n'
-        for(i; i < elements.length; i++){
-            var isChecked = elements[i].ariaChecked
-            if(isChecked === 'true'){
+   function handleMultiChange(index: number, checked: boolean) {
+        setMultiChecked((prev: any) => {
+            // Create a new array to avoid mutating th state directly
+            const next = [...prev];
+            // Set the value at the specified index
+            next[index] = checked;
+            return next;
+        });
+    }
 
-                var id = elements[i].id
-                var option = document.querySelector(`label[for="${id}"]`)
-                strResult = strResult + `${option?.textContent}\n`
+    function getMultiResult() {
+        var strResult = 'Selected options:\n'
+        //Get the elements for the multi checkboxes
+        //Get number of checkboxes checked
+        var count = multiChecked.filter((check:boolean) => check === true).length
+        //If count is greater then 1, loop through the checkboxes and add to result string
+        if(count >= 1){
+            for(var i = 0; i < multiChecked.length; i++){
+                if(multiChecked[i] === true){
+                    strResult += `${multiOptions[i]}\n`
+                    
+                }
+
             }
         }
         document.getElementById('multipleOptResult')!.innerText = strResult
@@ -134,24 +150,43 @@ export default function Page(this: any) {
   
     return (
     <div className="grid grid-cols-[1fr_8fr_1fr] sm:grid-cols-[1fr_2fr_1fr] p-6 gap-3 ">
-      <div className="grid col-start-1 col-span-3">
-        <p data-testid='challenge'>The challenge is to use the checkboxes</p>
+      <div className="grid col-start-1 col-span-3" data-testid="challenge" id="challenge">
+        <Accordion type="single" collapsible>
+        <AccordionItem value='item1'>
+          <AccordionTrigger className="challenge-chevron">The challenge...</AccordionTrigger>
+          <AccordionContent>
+            <h4>Multiple Checkbox Groups:</h4>
+            <p>There are several independent checkbox groups (single, default, multiple, any two, select all), each with different logic. Tests must isolate each group and ensure interactions in one do not affect others.</p>
+            <h4>Dynamic Error and Result Messages:</h4>
+            <p>Error and result messages are shown/hidden or updated based on checkbox state. Tests must assert both visibility and content, and handle timing issues if updates are asynchronous or delayed.</p>
+            <h4>Edge Cases and Validation:</h4>
+            <p>For "Any Two," selecting more than two checkboxes triggers an error. For "Select All," not all boxes checked triggers an error. Tests must cover boundary conditions and verify correct error handling.</p>
+            <h4>Disabled State:</h4>
+            <p>Disabled checkboxes must not be interactable. Tests need to ensure that clicks or keyboard events do not change their state.</p>
+            <h4>Accessibility:</h4>
+            <p>Custom checkbox components may lack native accessibility features. Tests should check for correct labeling, keyboard navigation, and ARIA attributes.</p>
+            <h4>Visual Feedback:</h4>
+            <p>Some feedback is shown via class changes (e.g., errorMessage, invisible/visible). Tests must assert both the presence of messages and the correct CSS classes.</p>
+            <h4>Summary:</h4>
+            <p>Testing this page requires careful handling of DOM updates, state isolation, error conditions, accessibility, and robust selectors. Direct DOM manipulation and mixed state logic are the biggest sources of test complexity and flakiness. Refactoring to use React state for all UI updates would make tests more reliable and maintainable.</p>     
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
       </div>
       <div className="grid col-start-2">
         <h2>Single checkbox</h2>
         <div className="flex flex-row gap-3 m-3">
             <Checkbox 
                 id='termsAndCondtions'
-                onCheckedChange={value => document.getElementById('tAndCResult')!.innerText = "Terms and Conditions: " + value}
+                checked={tAndCChecked}
+                onCheckedChange={checked => setTAndCChecked(checked === true)}
             ></Checkbox>
             <div>
                 <label
                     htmlFor="termsAndCondtions"
                 >Accept terms and conditions</label>
+                <p id="tAndCResult">{`Terms and Conditions: ${tAndCChecked}`}</p>
             </div>
-        </div>
-        <div>
-            <p id="tAndCResult"></p>
         </div>
         
       </div>
@@ -160,17 +195,15 @@ export default function Page(this: any) {
         <div className="flex flex-row gap-3 m-3">
             <Checkbox 
                 id='optIn'
-                defaultChecked={true}
-                onCheckedChange={value => document.getElementById('optInResult')!.innerText = "Opt in: " + value}
+                checked={optInChecked}
+                onCheckedChange={checked => {setOptInChecked(checked === true)}}
             ></Checkbox>
             <div>
                 <label
                     htmlFor="otpIn"
                 >Send specials and newsletters</label>
+                <p id="optInResult">{`Opt in: ${optInChecked}`}</p>
             </div>
-        </div>
-        <div>
-            <p id="optInResult"></p>
         </div>
         
       </div>
@@ -202,47 +235,25 @@ export default function Page(this: any) {
       <div className="grid col-start-2">
         <h2>Multiple checkboxes</h2>
         <div data-testid="multiCheckboxes">
-            <div className="flex flex-row gap-3 m-3">
-                <Checkbox 
-                    id='opt1'
-                    className='multiCheckbox'
-                    
-                ></Checkbox>
-                <div>
-                    <label
-                        htmlFor="opt1"
-                    >Option 1</label>
-                </div>
-            </div>
-            <div className="flex flex-row gap-3 m-3">
-                <Checkbox 
-                    id='opt2'
-                    className='multiCheckbox'
-                    
-                ></Checkbox>
-                <div>
-                    <label
-                        htmlFor="opt2"
-                    >Option 2</label>
-                </div>
-            </div>
-            <div className="flex flex-row gap-3 m-3">
-                <Checkbox 
-                    id='opt3'
-                    className='multiCheckbox'
-                    
-                >
-
-                </Checkbox>
-                <div>
-                    <label
-                        htmlFor="opt3"
-                    >Option 3</label>
-                </div>
+            {multiOptions.map((el, index) => (
+            <div key={el} className="flex flex-row gap-3 m-3">
                 
-            </div>
+                    <Checkbox
+                    id={`multi${index}`} 
+                    name={el}
+                    value={el}   
+                    key={el}
+                        checked={multiChecked[index]}
+                        onCheckedChange={checked => {handleMultiChange(index, checked === true)}}
+                    />
+                        <div>
+                            <label htmlFor={`multi${index}`} >{el}</label>
+                        </div>
+                    </div>       
+                    ))}
+            
             <div className="m-3 gap-3">
-                <Button onClick={multipleOptResult}>Submit</Button>
+                <Button onClick={getMultiResult}>Submit</Button>
             </div>
             <div className="m-3 gap-3">
                 <p id="multipleOptResult"></p>
