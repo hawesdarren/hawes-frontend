@@ -12,7 +12,7 @@ export default function Header() {
  
   <div className="grid auto-cols-[minmax(0,60px)_1fr_minmax(0,60px)] gap-4 w-dvw max-w-200">
     <div className="col-start-1 col-end-2 place-items-start z-50">
-    <HamburgerMenu />  
+    <HamburgerMenu />
     {/*<DarkMode />*/}
     </div>
     <div className="col-start-2 place-items-center overflow-clip mt-5">

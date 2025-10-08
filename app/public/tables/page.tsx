@@ -157,12 +157,12 @@ export default function Page() {
     </div>
     <div>
       <h4>Payments table</h4>
-      <Table data-testid="paymentsTable" id="paymentsTable">
+      <Table data-testid="paymentsTable" id="paymentsTable" className="text-(--text-color)">
         <TableHeader>
           <TableRow>
-            <TableHead>Date</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>AmountDate</TableHead>
+            <TableHead className="text-(--text-color)">Date</TableHead>
+            <TableHead className="text-(--text-color)">Description</TableHead>
+            <TableHead className="text-(--text-color)">AmountDate</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -181,10 +181,10 @@ export default function Page() {
     </div>
     <div>
       <h4>Date of birth table</h4>
-      <Table data-testid="dobTable" id="dobTable">
+      <Table data-testid="dobTable" id="dobTable" className="text-(--text-color)">
         <TableHeader>
           <TableRow>
-            <TableHead>
+            <TableHead className="text-(--text-color)">
               <Button
               onClick={sortUsersByFirstName}
               variant="ghost"
@@ -192,7 +192,7 @@ export default function Page() {
                 <ArrowUpDown />
               </Button>
             </TableHead>
-            <TableHead>
+            <TableHead className="text-(--text-color)">
               <Button
               onClick={sortUsersByLastName}
               variant="ghost"
@@ -200,7 +200,7 @@ export default function Page() {
                 <ArrowUpDown />
               </Button>
             </TableHead>
-            <TableHead>
+            <TableHead className="text-(--text-color)">
               <Button
               onClick={sortUsersByDob}
               variant="ghost"

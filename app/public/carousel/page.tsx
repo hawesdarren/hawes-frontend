@@ -39,7 +39,7 @@ export default function Page(this: any) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-[1fr_2fr_1fr] p-6 gap-3 ">
-      <div className="sm:col-start-2 sm:span-2" data-testid="challenge" id="challenge">
+      <div className="grid col-start-1 col-span-1 sm:col-span-3" data-testid="challenge" id="challenge">
         <Accordion type="single" collapsible>
         <AccordionItem value='item1'>
           <AccordionTrigger className="challenge-chevron">The challenge...</AccordionTrigger>
