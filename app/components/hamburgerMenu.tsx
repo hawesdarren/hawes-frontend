@@ -18,7 +18,8 @@ export default function HamburgerMenu() {
         { name: 'Tables', href: '/public/tables' },
         { name: 'Collapsible', href: '/public/collapsible' },
         { name: 'Carousel', href: '/public/carousel' },
-        { name: 'Combobox', href: '/public/combobox' }
+        { name: 'Combobox', href: '/public/combobox' },
+        { name: 'Alerts', href: '/public/alerts' }
     ];
 
     const sortAlphabetically = (a: { name: string; }, b: { name: string; }) => {

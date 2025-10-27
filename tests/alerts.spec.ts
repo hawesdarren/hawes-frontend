@@ -62,4 +62,13 @@ test('Alert box keyboard navigation', async ({ page }) => {
     await expect(alertsPage.alertBox).toBeHidden(); 
 });
 
+test('Sonner alert appears on button click', async ({ page }) => {
+    // Click on Show Success Alert button
+    await alertsPage.sonnerAlertButton.click();
+    // Expect sonner alert box to be visible
+    await expect(alertsPage.sonnerAlertBox).toBeVisible();
+    // Expect sonner alert message to be correct
+    await expect(alertsPage.sonnerAlertMessage).toHaveText('This is a success alert!'); 
+});
+
 });
