@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Head from "next/head";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner"
 //import "./checkbox_styles.css"
 
 const geistSans = Geist({
@@ -34,6 +35,7 @@ export default function RootLayout({
 
         <div className="grid grid-cols-1 w-dvw max-w-200 min-h-dvh justify-self-center">
           {children}
+          <Toaster />
         </div>
 
       </body>

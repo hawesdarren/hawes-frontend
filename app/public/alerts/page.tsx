@@ -5,6 +5,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, 
     AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger, } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 export default function Page(this: any) {
     const [isDelete, setIsDelete] = React.useState(false);
@@ -35,11 +36,11 @@ export default function Page(this: any) {
         </AccordionItem>
       </Accordion>
       </div>
-        <div className="grid col-start-2 col-span-1 justify-items-center">            
-            <div >
+        <div className="grid col-start-2 col-span-1 justify-items-center ">            
+            <div>
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button variant="outline" className="text-(--text-color) hover:text-(text-color) hover:font-bold">Show Alert</Button>
+                        <Button variant="outline" className="text-(--text-color) hover:text-(text-color) hover:font-bold min-w-[200px]">Show Alert</Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
@@ -64,9 +65,18 @@ export default function Page(this: any) {
                 <div className="mt-2">
                     <p data-testid="alert-action">{`Action: ${isDelete}`}</p>
                 </div>
-            </div>    
-                
-                
+            </div>  
+            <div className="mt-6 ">
+                <Button 
+                    variant='outline'
+                    className="text-(--text-color) hover:text-(text-color) hover:font-bold min-w-[200px]"
+                    onClick={() => {
+                        toast.success('This is a success alert!', { duration: 5000, position: "top-center" });
+                    }}
+                >
+                    Show Success Alert
+                </Button>
+            </div>
         </div>
             
       </div>

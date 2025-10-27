@@ -11,6 +11,9 @@ export class AlertsPage {
     readonly alertCloseButton: Locator;
     readonly alertConfirmButton: Locator;
     readonly alertActionResult: Locator;
+    readonly sonnerAlertButton: Locator;
+    readonly sonnerAlertBox: Locator;
+    readonly sonnerAlertMessage: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -23,6 +26,10 @@ export class AlertsPage {
         this.alertCloseButton = this.alertBox.getByRole('button', { name: 'Cancel' });
         this.alertConfirmButton = this.alertBox.getByRole('button', { name: 'Continue' });
         this.alertActionResult = page.getByTestId('alert-action');
+        this.sonnerAlertButton = page.getByRole('button', { name: 'Show Success Alert' });
+        this.sonnerAlertBox = page.getByLabel('Notifications alt+T')
+        this.sonnerAlertMessage = page.getByRole('listitem').getByText('This is a success alert!');
+        
 
     }
 }
