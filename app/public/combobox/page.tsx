@@ -3,6 +3,7 @@
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronsUpDown } from "lucide-react";
@@ -41,11 +42,20 @@ const accounts = [
     { name: getRandomAccount(), accountNumber: "42-5678-901234567-89", balance: getRandomDollarValue() }
 ]
 
+const animalItems = [
+    { value: 'dog', label: 'Dog' },
+    { value: 'cat', label: 'Cat' },
+    { value: 'rabbit', label: 'Rabbit' },
+    { value: 'hamster', label: 'Hamster' },
+    { value: 'guinea-pig', label: 'Guinea Pig' }
+]
+
 export default function Page(this: any) {
     const [open, setOpen] = React.useState(false);
     const [selectedFruit, setSelectedFruit] = React.useState("");
     const [openAccounts, setOpenAccounts] = React.useState(false);
     const [selectedAccount, setSelectedAccount] = React.useState("");
+    const [selectedAnimal, setSelectedAnimal] = React.useState("");
 
     return (
         <div className="grid grid-cols-[1fr_8fr_1fr] sm:grid-cols-[1fr_2fr_1fr] p-6 gap-3 ">
@@ -124,7 +134,7 @@ export default function Page(this: any) {
                         <p data-testid="static-combobox-selected">Selected: {selectedFruit ? fruitItems.find((fruitItem) => fruitItem.value == selectedFruit)?.label : "No fruit selected"}</p>
                     </div>
                 </div>
-                <div data-testid="dynamic-combobox-section">
+                <div className="pb-8" data-testid="dynamic-combobox-section">
                     <div className="pb-2">
                         <h4>Dynamic combobox</h4>
                     </div>
@@ -176,11 +186,35 @@ export default function Page(this: any) {
                         <p data-testid="dynamic-combobox-selected">Selected: {selectedAccount ? accounts.find((account) => account.accountNumber == selectedAccount)?.accountNumber : "No account selected"}</p>
                     </div>
                 </div>
-                
-                
-                
+                <div className="pb-8" data-testid="static-select-section">
+                    <div className="pb-2">
+                            <h4>Static select</h4>
+                    </div>
+                    <div className="pb-1">    
+                        <Select
+                            onValueChange={(value) => {
+                                setSelectedAnimal(value === selectedAnimal ? "" : value);
+                            }}
+                        >
+                            <SelectTrigger className="w-[300px] text-(--text-color) hover:text-(--text-color) hover:font-bold" >
+                                <SelectValue placeholder="Select an animal" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {animalItems.map((animal) => (
+                                    <SelectItem 
+                                        className="text-(--text-color) hover:text-(--text-color) hover:font-bold"
+                                        key={animal.value} value={animal.value}>
+                                        {animal.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div>
+                        <p data-testid="static-select-selected">Selected: {selectedAnimal ? animalItems.find((animalItem) => animalItem.value == selectedAnimal)?.label : "No animal selected"}</p>
+                    </div>
+                </div>
             </div>
-            
         </div>
 
     )}
