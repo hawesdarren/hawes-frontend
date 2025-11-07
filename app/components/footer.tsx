@@ -3,14 +3,14 @@ import Link from "next/link";
 export default function Footer() {
   
     return (
-        <footer className="grid auto-cols-auto gap-4 content-start">
-            <div className="col-start-1 col-end-2">
+        <footer className="grid auto-cols-auto gap-4 content-start mb-3 mt-3">
+            <div className="col-start-1 col-end-2 ml-3">
                 <p>© 2025 Hawes</p>
             </div>
-            <div className="col-start-2 justify-self-center">
+            <div className="col-start-2 justify-self-center ">
                 <Link href="mailto:contact@hawes.co.nz">Contact</Link>
             </div>
-            <div className="col-start-3 justify-self-end">
+            <div className="col-start-3 justify-self-end mr-3">
                 <Link href="/public/faq">FAQ</Link>
             </div>
         </footer>
