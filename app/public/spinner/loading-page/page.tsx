@@ -2,6 +2,9 @@
 
 import { Spinner } from "@/components/ui/spinner";
 
+// Force this page to be dynamically rendered on each request
+export const dynamic = 'force-dynamic';
+
 //Function to fake data loading
 const fakeDataLoading = () => {
     return new Promise((resolve) => {
