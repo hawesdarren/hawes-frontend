@@ -40,7 +40,7 @@ export default function Page(this: any) {
             <div>
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
-                        <Button variant="outline" className="text-(--text-color) hover:text-(text-color) hover:font-bold min-w-[200px]">Show Alert</Button>
+                        <Button variant="default" className="min-w-[200px]">Show Alert</Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
@@ -68,8 +68,8 @@ export default function Page(this: any) {
             </div>  
             <div className="mt-6 ">
                 <Button 
-                    variant='outline'
-                    className="text-(--text-color) hover:text-(text-color) hover:font-bold min-w-[200px]"
+                    variant='default'
+                    className="min-w-[200px]"
                     onClick={() => {
                         toast.success('This is a success alert!', { duration: 5000, position: "top-center" });
                     }}
