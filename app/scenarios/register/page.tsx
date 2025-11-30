@@ -8,8 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Spinner } from "@/components/ui/spinner"
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
+  // Router
+  const router = useRouter();
+
   //Email state
   const [email, setEmail] = useState<string>('');
   const [emailError, setEmailError] = useState<string>('');
@@ -24,6 +28,8 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>('');
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState<boolean>(false);
+  // Registration state
+  const [registrationError, setRegistrationError] = useState<string>('');
 
   //Submit state
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -96,8 +102,42 @@ export default function Register() {
     }
   }; 
   
+  const register = async () => {
+    // Registration logic here
+    let payLoad = {
+      email: email,
+      password: password,
+      renteredPassword: confirmPassword
+    }
+    console.log("Registering user with payload:", payLoad);
+    // Call Registration API here
+    const tempURL = "http://192.168.164.129:8080";
+    let result = await fetch(`${tempURL}/api/authentication/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payLoad),
+    });
+    let data = await result.json();
+    console.log("Registration response:", data);
+    // Check for successful registration and handle accordingly
+    if(result.ok && data.success === true) {
+      // Store token
+      localStorage.setItem('token', data.token);
+      // Navigate to 2fa setup or login page
+      router.push('/scenarios/two-factor-registration');
+    }
+    else {
+      // Show  error message
+      console.error("Registration failed:", data.message);
+      setRegistrationError(data.message || "Registration failed. Please try again.");
+    }
+  };
+
   //Submitting functions
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("Submitting registration form");
     e.preventDefault();
     setEmailError(validateEmail(email));
     setPasswordError(validatePassword(password));
@@ -112,11 +152,12 @@ export default function Register() {
       !validateConfirmPassword(confirmPassword)
     ) {
       setIsSubmitting(true);
-      // Simulate form submission
+      // Form submission logic here
       setTimeout(() => {
         setIsSubmitting(false);
-        alert("Registration successful!");
-      }, 2000);
+        // Call Registration API here
+        register();
+      });
     }
   }
 
@@ -128,14 +169,14 @@ export default function Register() {
   </div>
   <div className="flex order-2  flex flex-col justify-self-center p-3 w-fit">
         
-        <form className="flex flex-col gap-2 w-80 sm:w-120">
+        <form className="flex flex-col gap-2 w-80 sm:w-140">
             <FieldSet>
               <FieldLegend className="text-(--text-color)">Register</FieldLegend>
               <FieldDescription>Please fill in the form to create an account.</FieldDescription>
               <FieldGroup>
                 <Field>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-                    <FieldLabel htmlFor="email" className="sm:min-w-24 sm:max-w-38">Email</FieldLabel>
+                    <FieldLabel htmlFor="email" className="sm:min-w-36 sm:max-w-48">Email</FieldLabel>
                     <Input 
                       id="email" 
                       type="email" 
@@ -149,7 +190,7 @@ export default function Register() {
                 </Field>
                 <Field>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">                
-                    <FieldLabel htmlFor="password" className="sm:min-w-24 sm:max-w-38">Password</FieldLabel>
+                    <FieldLabel htmlFor="password" className="sm:min-w-36 sm:max-w-48">Password</FieldLabel>
                     <Input 
                       id="password" 
                       type="password" 
@@ -164,7 +205,7 @@ export default function Register() {
        
                 <Field>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-                    <FieldLabel htmlFor="confirmPassword" className="sm:min-w-24 sm:max-w-38">Confirm Password</FieldLabel>
+                    <FieldLabel htmlFor="confirmPassword" className="sm:min-w-36 sm:max-w-48">Confirm Password</FieldLabel>
                     <Input 
                       id="confirmPassword" 
                       type="password" 
@@ -178,26 +219,35 @@ export default function Register() {
                 </Field>
                 {confirmPasswordTouched && confirmPasswordError && <FieldError>{confirmPasswordError}</FieldError>}
                 <FieldSeparator />
+                <div>{registrationError && <FieldError>{registrationError}</FieldError>}</div>
                 <Field>
-                  <Button 
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                    <Button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full mt-4 "
+                    className="w-full sm:w-1/2 mt-4 "
                     onClick={handleSubmit}
                     >
                       {isSubmitting && <Spinner />}
                       Register</Button>
-                  <Link href="/" passHref>
+                    <Link href="/" passHref className="w-full sm:w-1/2 mt-4 ">
                     <Button 
                       type="button" 
                       variant="outline"
-                      className="w-full mt-4 "
+                      className="w-full"
                     >
                       Cancel</Button>
-                  </Link>
+                    </Link>
+                  </div>
+                  
                 </Field>
                 <Field>
-                  <Button variant="link" className="w-full mt-4 justify-start text-base text-(--text-color)">Already have an account? Login</Button>
+                  <Button 
+                    type="button"
+                    variant="link" 
+                    className="w-full mt-4 justify-start text-base text-(--text-color)"
+                    onClick={() => router.push('/scenarios/login')}
+                    >Already have an account? Login</Button>
                 </Field>
               </FieldGroup>
             </FieldSet>

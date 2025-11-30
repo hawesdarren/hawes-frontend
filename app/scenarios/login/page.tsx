@@ -8,8 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Spinner } from "@/components/ui/spinner"
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+    // Router
+    const router = useRouter();
 
     //Email state
     const [email, setEmail] = useState<string>('');
@@ -92,8 +95,9 @@ export default function Login() {
             email: email,
             password: password
         };
-        
-        let result = await fetch('https://192.168.1.137:443/api/authentication/login', {
+        //var tempApiURL = 'https://192.168.1.137';
+        var tempApiURL = 'http://localhost:5000';
+        let result = await fetch(`/api/authentication/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -102,36 +106,64 @@ export default function Login() {
         })
         .then(response => response.json()) 
         console.log(result); 
+        // Check response is successful
+        if (result.success && result.token !== null) {
+            // Handle successful login
+            if(result.token !== null){
+                // Store token in local storage
+                localStorage.setItem('token', result.token);
+                console.log('Token stored in local storage');
+                // Nav to sercure landing page
+                router.push('/scenarios/secure-landing');
+            if(result.tempPassword === true){
+                // Redirect to password change page
+                router.push('/scenarios/change-password');
+            }
+            if(result.tfaEnabled === true){
+                // Redirect to TFA verification page
+                router.push('/scenarios/tfa-verify');
+            }    
+        }
+        else {
+            // Handle login failure
+            console.log('Login failed');
+        }
+        }
     }
 
     return (
         <div>
             <Header />
-            <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-                <form onSubmit={handleSubmit} noValidate>
+            <div className="flex order-2  flex flex-col justify-self-center p-3 w-fit">
+                <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-2 w-80 sm:w-140">
                     <FieldSet>
+                        <FieldLegend className="text-(--text-color)">Login</FieldLegend>
+                        <FieldDescription>Please enter your credentials to log in.</FieldDescription>
                         <FieldGroup>
-                            <FieldLabel htmlFor="email">Email</FieldLabel>
-                            <FieldContent>
+                            <Field>
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                                <FieldLabel htmlFor="email" className="sm:min-w-36 sm:max-w-48">Email</FieldLabel>
                                 <Input
-                                    type="email"
-                                    id="email"
-                                    value={email}
-                                    onChange={handleEmailChange}
-                                    onBlur={handleEmailBlur}
-                                    aria-invalid={!!emailError}
-                                    aria-describedby="email-error"
-                                />
-                            </FieldContent>
-                            {emailError && (
-                                <FieldError id="email-error">{emailError}</FieldError>
-                            )}
+                                        type="email"
+                                        id="email"
+                                        value={email}
+                                        onChange={handleEmailChange}
+                                        onBlur={handleEmailBlur}
+                                        aria-invalid={!!emailError}
+                                        aria-describedby="email-error"
+                                    />
+                                </div>
+                                {emailError && (
+                                    <FieldError id="email-error">{emailError}</FieldError>
+                                )}
+                            </Field>
+                            
                         </FieldGroup>
 
                         <FieldGroup>
-                            <FieldLabel htmlFor="password">Password</FieldLabel>
-                            <FieldContent>
+                            <Field>
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                                <FieldLabel htmlFor="password" className="sm:min-w-36 sm:max-w-48">Password</FieldLabel>
                                 <Input
                                     type="password"
                                     id="password"
@@ -141,45 +173,51 @@ export default function Login() {
                                     aria-invalid={!!passwordError}
                                     aria-describedby="password-error"
                                 />
-                            </FieldContent>
-                            {passwordError && (
-                                <FieldError id="password-error">{passwordError}</FieldError>
-                            )}
+                                </div>
+                                {passwordError && (
+                                    <FieldError id="password-error">{passwordError}</FieldError>
+                                )}    
+                            </Field>
+                            
                         </FieldGroup>
                         <FieldSeparator />
-
-                        <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="w-full mt-4"
-                            aria-busy={isSubmitting}
-                            aria-disabled={isSubmitting}
-                        >
-                            {isSubmitting ? (
-                                <div className="flex items-center justify-center">
-                                    <Spinner className="mr-2" />
-                                    Logging in...
-                                </div>
-                            ) : (
-                                "Login"
-                            )}
-                        </Button>
-                        <Link href = "/" passHref>
-                            <Button
-                              variant="outline"
-                              className="w-full mt-4"
-                              >Cancel
-                            </Button>
-                        </Link>
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                                <Button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="w-full sm:w-1/2 mt-4"
+                                aria-busy={isSubmitting}
+                                aria-disabled={isSubmitting}
+                                >
+                                {isSubmitting ? (
+                                    <div className="flex items-center justify-center">
+                                        <Spinner className="mr-2" />
+                                        Logging in...
+                                    </div>
+                                ) : (
+                                    "Login"
+                                )}
+                                </Button>
+                                <Link href = "/" passHref className="w-full sm:w-1/2 mt-4">
+                                    <Button
+                                    variant="outline"
+                                    className="w-full"
+                                    >Cancel
+                                    </Button>
+                                </Link>
+                            </div>
                         
+                        <Field>
+                            <Button 
+                            type="button"
+                            variant="link" 
+                            className="w-full mt-4 justify-start text-base text-(--text-color)"
+                            onClick={() => router.push('/scenarios/register')}
+                            >Don't have an account? Register</Button>
+                        </Field>
                     </FieldSet>
                 </form>
-                <p className="mt-4 text-center">
-                    Don't have an account?{" "}
-                    <Link href="/scenarios/register" className="text-blue-500 hover:underline">
-                        Register here
-                    </Link>
-                </p>
+                
             </div>
         </div>
     );
