@@ -27,6 +27,9 @@ export default function Login() {
     //Submit state
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+    // Login error state
+    const [loginError, setLoginError] = useState<string>('');
+
     //Validation functions
 
     const validateEmail = (value: string) => {
@@ -95,8 +98,7 @@ export default function Login() {
             email: email,
             password: password
         };
-        //var tempApiURL = 'https://192.168.1.137';
-        var tempApiURL = 'http://localhost:5000';
+        
         let result = await fetch(`/api/authentication/login`, {
             method: 'POST',
             headers: {
@@ -105,16 +107,21 @@ export default function Login() {
             body: JSON.stringify(payload),
         })
         .then(response => response.json()) 
-        console.log(result); 
+        if(!result.ok){
+            // Handle error response if not 200 OK
+            setLoginError('Unexpected error. Please try again.');
+            return;
+        }
         // Check response is successful
         if (result.success && result.token !== null) {
             // Handle successful login
+            console.log('Login successful:', result);
             if(result.token !== null){
                 // Store token in local storage
                 localStorage.setItem('token', result.token);
                 console.log('Token stored in local storage');
-                // Nav to sercure landing page
-                router.push('/scenarios/secure-landing');
+            }
+            // Navigate based on response flags
             if(result.tempPassword === true){
                 // Redirect to password change page
                 router.push('/scenarios/change-password');
@@ -126,14 +133,15 @@ export default function Login() {
         }
         else {
             // Handle login failure
-            console.log('Login failed');
+            console.log('Login failed:', result.message);
+            setLoginError('Invalid email or password. Please try again.');
         }
-        }
+        
     }
 
     return (
         <div>
-            <Header />
+            
             <div className="flex order-2  flex flex-col justify-self-center p-3 w-fit">
                 <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-2 w-80 sm:w-140">
                     <FieldSet>
@@ -181,6 +189,10 @@ export default function Login() {
                             
                         </FieldGroup>
                         <FieldSeparator />
+                        <FieldError>
+                            {loginError}
+                        </FieldError>
+                        
                             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
                                 <Button
                                 type="submit"

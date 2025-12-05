@@ -34,6 +34,20 @@ export default function Register() {
   //Submit state
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  // Error message mapping function
+  const getErrorMessage = (errorCode: string): string => {
+    const errorMessages: Record<string, string> = {
+      INVALID_EMAIL: "Please enter a valid email address.",
+      EMAIL_ALREADY_REGISTERED: "This email address is already registered. Please try logging in or use a different email.",
+      PASSWORD_COMPLEXITY: "Password must contain at least 8 characters, including uppercase, lowercase, numbers, and special characters.",
+      COMMON_PASSWORD: "This password is too common and easy to guess. Please choose a more secure password.",
+      REGISTRATION_FAILURE: "We couldn't complete your registration at this time. Please try again later.",
+      PASSWORDS_DONT_MATCH: "The passwords you entered don't match. Please make sure both password fields are identical."
+    };
+    
+    return errorMessages[errorCode] || errorCode || "An unexpected error occurred. Please try again.";
+  };
+
   //Validation functions
 
   const validateEmail = (value: string) => {
@@ -111,8 +125,7 @@ export default function Register() {
     }
     console.log("Registering user with payload:", payLoad);
     // Call Registration API here
-    const tempURL = "http://192.168.164.129:8080";
-    let result = await fetch(`${tempURL}/api/authentication/register`, {
+    let result = await fetch('/api/authentication/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,12 +139,14 @@ export default function Register() {
       // Store token
       localStorage.setItem('token', data.token);
       // Navigate to 2fa setup or login page
-      router.push('/scenarios/two-factor-registration');
+      router.push('/scenarios/two-factor-setup');
     }
     else {
       // Show  error message
-      console.error("Registration failed:", data.message);
-      setRegistrationError(data.message || "Registration failed. Please try again.");
+      console.error("Registration failed:", data.error);
+      // Map error messages to user-friendly messages if needed
+      let userErrorMessage = getErrorMessage(data.error);
+      setRegistrationError(userErrorMessage || "Registration failed. Please try again.");
     }
   };
 
@@ -154,9 +169,9 @@ export default function Register() {
       setIsSubmitting(true);
       // Form submission logic here
       setTimeout(() => {
-        setIsSubmitting(false);
         // Call Registration API here
         register();
+        setIsSubmitting(false);
       });
     }
   }
@@ -164,9 +179,6 @@ export default function Register() {
   return (
   <div className="grid grid-rows-[60px_auto_1fr] gap-6 min-h-dvh justify-center">
 
-  <div className="flex order-1 justify-self-start z-50">
-    <Header></Header>
-  </div>
   <div className="flex order-2  flex flex-col justify-self-center p-3 w-fit">
         
         <form className="flex flex-col gap-2 w-80 sm:w-140">
@@ -254,13 +266,6 @@ export default function Register() {
         </form>
         
   </div>
-  <div className="flex order-3 items-end p-3">
-    Footer    
-        
-  </div>
-   
-    </div>
-    
-    )
+</div>)
     
 };
