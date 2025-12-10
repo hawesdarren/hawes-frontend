@@ -118,17 +118,14 @@ export default function TwoFactorRegistration() {
     }, [otp]);
 
     return (
-        <div>
+        <div className="grid grid-rows-[60px_auto_1fr] gap-6 min-h-dvh justify-center">
             
-            <main className="container mx-auto p-4">
-                <h4 className="text-2xl font-bold mb-4 text-center">Two-Factor Authentication Setup</h4>
+            <div className="flex order-2  flex flex-col justify-self-center p-3 w-fit">
+                <div className="flex flex-col gap-2 w-80 sm:w-140">
+                <p className="text-center justify-self-center">Two-Factor Authentication Setup</p>
                 <FieldSet>
                     <FieldGroup>
-                        <FieldLabel>
-                            <FieldDescription className="text-center">
-                                Use your authenticator app to scan the QR code below.
-                            </FieldDescription>
-                        </FieldLabel>
+                        <FieldDescription className="text-center">Use your authenticator app to scan the QR code below.</FieldDescription>
                         <Field>
                             <div className="flex justify-center">
                                 {isLoadingQr || !qrCodeUrl ? (
@@ -152,7 +149,7 @@ export default function TwoFactorRegistration() {
                             </div>
                         </Field>
                         <FieldError>
-                            <div className="text-center text-red-600" data-testid="qr-image-error">
+                            <div className="text-center" data-testid="qr-image-error">
                                 {qrImageErrorMessage}
                             </div>
                         </FieldError>
@@ -161,7 +158,7 @@ export default function TwoFactorRegistration() {
                                 <p>Can't scan the QR code?</p>
                                 <Button
                                     variant="default"
-                                    
+                                    className="w-full sm:w-1/2"
                                     onClick={() => {
                                         navigator.clipboard.writeText(qrCodeUrl);
                                     }}
@@ -195,7 +192,7 @@ export default function TwoFactorRegistration() {
                             </div>
                         </Field>
                         <FieldError>
-                            <div className="text-center text-red-600" data-testid="error-message">
+                            <div className="text-center " data-testid="error-message">
                                 {errorMessage}
                             </div>
                         </FieldError>
@@ -203,8 +200,9 @@ export default function TwoFactorRegistration() {
                             <div className="flex justify-center">
                                 <Button 
                                     variant="default"
+                                    className="w-full sm:w-1/2"
                                     onClick={() => router.push('/scenarios/login')}>
-                                    Skip TFA setup, Login</Button>
+                                    I don't want TFA, Login</Button>
                             </div>
                         </Field>
                     </FieldGroup>
@@ -212,7 +210,8 @@ export default function TwoFactorRegistration() {
                 <div className="mt-3 text-center">
                     <p id="error-message" data-testid="error-message">{errorMessage}</p>
                 </div>
-            </main>
+                </div>
+            </div>
         </div>
     );
 }

@@ -21,11 +21,12 @@ export default function HamburgerMenu() {
         { name: 'Combobox', href: '/public/combobox' },
         { name: 'Alerts', href: '/public/alerts' },
         { name: 'Spinner', href: '/public/spinner' }
-        
-
-
     ];
 
+    const scenarionSubMenuItems = [
+        { name: 'Login', href: '/scenarios/login' },
+
+    ];
     const sortAlphabetically = (a: { name: string; }, b: { name: string; }) => {
         if (a.name < b.name) {
             return -1;
@@ -35,14 +36,22 @@ export default function HamburgerMenu() {
         }
         return 0;
     };
+    // Sort menu items alphabetically
     menuItems.sort(sortAlphabetically);
+    scenarionSubMenuItems.sort(sortAlphabetically);
 
     const permanentMenuItems = [
         { name: 'Home', href: '/' },
-        { name: '------------', href: '' },
+        { name: '----------------', href: '' },
     ]
+
+    const scenariosMenuHeader = [
+        { name: 'Scenarios', href: '' },
+        { name: '----------------', href: '' },
+    ];
     
     const finalMenuItems = permanentMenuItems.concat(menuItems);
+    finalMenuItems.push(...scenariosMenuHeader, ...scenarionSubMenuItems);
     const menuRef = useRef<HTMLDivElement>(null); // Reference to the menu container
     const menuItemsRef = useRef<HTMLDivElement>(null); // Reference to the menu items
     const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
