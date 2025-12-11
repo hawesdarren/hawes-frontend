@@ -24,6 +24,7 @@ export default function Login() {
     const [password, setPassword] = useState<string>('');
     const [passwordError, setPasswordError] = useState<string>('');
     const [passwordTouched, setPasswordTouched] = useState<boolean>(false);
+    const [tfaEnabled, setTfaEnabled] = useState<boolean>(false);
 
     //Submit state
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -120,6 +121,9 @@ export default function Login() {
         
         // Check response is successful
         if (result.success && result.token !== null) {
+            // Store tfaEnabled state
+            setTfaEnabled(result.tfaEnabled === true);
+
             // Handle successful login
             console.log('Login successful:', result);
             if(result.token !== null){
@@ -133,7 +137,7 @@ export default function Login() {
             // Navigate based on response flags
             if(result.tempPassword === true){
                 // Redirect to password change page
-                router.push('/scenarios/change-password');
+                router.push('/scenarios/password-reset?tempPassword=true&tfaEnabled=' + (result.tfaEnabled === true));
             }
             if(result.tfaEnabled === true){
                 // Redirect to TFA verification page

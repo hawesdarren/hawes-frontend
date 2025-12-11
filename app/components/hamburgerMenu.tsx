@@ -42,12 +42,12 @@ export default function HamburgerMenu() {
 
     const permanentMenuItems = [
         { name: 'Home', href: '/' },
-        { name: '----------------', href: '' },
     ]
 
     const scenariosMenuHeader = [
-        { name: 'Scenarios', href: '' },
         { name: '----------------', href: '' },
+        { name: 'Scenarios', href: '' },
+        
     ];
     
     const finalMenuItems = permanentMenuItems.concat(menuItems);

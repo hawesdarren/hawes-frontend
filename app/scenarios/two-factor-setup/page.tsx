@@ -117,6 +117,22 @@ export default function TwoFactorRegistration() {
         }
     }, [otp]);
 
+    // Copy QR code URL to clipboard
+    const copyToClipboard = async () => {
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(qrCodeUrl);
+                console.log('QR key copied to clipboard');
+            } else {
+                console.error('Clipboard API not available');
+                alert('Clipboard not available. Please copy manually: ' + qrCodeUrl);
+            }
+        } catch (error) {
+            console.error('Failed to copy to clipboard:', error);
+            alert('Failed to copy to clipboard');
+        }
+    };
+
     return (
         <div className="grid grid-rows-[60px_auto_1fr] gap-6 min-h-dvh justify-center">
             
@@ -155,13 +171,12 @@ export default function TwoFactorRegistration() {
                         </FieldError>
                         <Field>
                             <div className="flex flex-col items-center gap-4">
-                                <p>Can't scan the QR code?</p>
+                                <p>On your phone and can't scan the QR code?<br/>
+                                Click the button below to copy the QR key and setup your authenticator app manually</p>
                                 <Button
                                     variant="default"
                                     className="w-full sm:w-1/2"
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(qrCodeUrl);
-                                    }}
+                                    onClick={copyToClipboard}
                                     >
                                         Copy the QR key to clipboard
                                 </Button>

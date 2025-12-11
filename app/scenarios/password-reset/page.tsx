@@ -1,18 +1,34 @@
 'use client'
 
-import { useState } from "react";;
+import { useState, useMemo } from "react";;
 import {Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel,
         FieldLegend, FieldSeparator, FieldSet, FieldTitle, } from "@/components/ui/field"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Spinner } from "@/components/ui/spinner"
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from "react";
 
 export default function PasswordReset() {
     // Router
     const router = useRouter();
+    const search = useSearchParams();
+
+    // Get tempPassword flag from query parameters
+    const isTempPassword = useMemo(() => {
+        return search.get('tempPassword') === 'true';
+    }, [search]);
+
+    // Get tfaEnabled flag from query parameters
+    const isTfaEnabled = useMemo(() => {
+        return search.get('tfaEnabled') === 'true';
+    }, [search]);
+
+    // Get changePassword flag from query parameters
+    const isChangePassword = useMemo(() => {
+        return search.get('changePassword') === 'true';
+    }, [search]);
 
     // New password state
     const [newPassword, setNewPassword] = useState<string>('');
@@ -45,7 +61,9 @@ export default function PasswordReset() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         // Handle password reset submission logic here
-        resetPassword();
+        setIsSubmitting(true);
+        await resetPassword();
+        setIsSubmitting(false);
 
     };
 
@@ -59,7 +77,6 @@ export default function PasswordReset() {
             confirmPassword: confirmPassword,
         };
         try {
-            setIsSubmitting(true);
             setPasswordResetError('');
             const response = await fetch('/api/authentication/change/password', {
                 method: 'POST',
@@ -80,7 +97,12 @@ export default function PasswordReset() {
                     setPasswordResetError(payload.error);
                     return;
                 }
-                // On successful password reset, redirect to landing page
+                // If temp password and tfa enabled, redirect to tfa verify
+                if(isTempPassword && isTfaEnabled){
+                    router.push('/scenarios/tfa-verify');
+                    return;
+                }
+                // Password reset successful, redirect to secure landing page
                 router.push('/scenarios/secure-landing');
             }
         } catch (error) {
@@ -150,8 +172,16 @@ export default function PasswordReset() {
                                 className="w-full sm:w-1/2 mt-4"
                                 onClick={() => {
                                     // Handle password reset submission
+                                    handleSubmit;
                                 }}>
-                                Reset password
+                                {isSubmitting ? (
+                                    <div className="flex items-center justify-center">
+                                        <Spinner className="mr-2" />
+                                        Resetting password...
+                                    </div>
+                                ) : (
+                                    "Reset password"
+                                )}
                             </Button>
                             <Link href = "/" passHref className="w-full sm:w-1/2 mt-4">
                                     <Button

@@ -49,7 +49,14 @@ export function verifyToken(){
         const isExpired = isTokenExpired();
         // Check authorization claim
         const isAuthorized = isTokenAuthorized();
-        return isExpired === false && isAuthorized === true;
+        if(isExpired === false && isAuthorized === true){
+            console.log("Token is valid: not expired and authorized.");
+            return true;
+        }
+        else {
+            console.log("Token is invalid: expired or not authorized.");
+            return false;
+        }
     
     } catch (error) {
         console.error("Error verifying token:", error);
@@ -98,6 +105,11 @@ export async function refreshToken(){
         console.error("Error in refreshToken function:", error);
         return false;
     }
+}
+
+export function clearTokens(){
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
 }
 
 
