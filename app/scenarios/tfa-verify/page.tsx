@@ -6,13 +6,18 @@ import { REGEXP_ONLY_DIGITS } from "input-otp";
 import Link from "next/link";
 import React from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function TfaVerifyPage() {
-
-    // OTP value
+    // Router 
+    const router = useRouter();
+    // OTP value and state
     const [otp, setOtp] = useState('');
+    const [otpDisabled, setOtpDisabled] = useState<boolean>(false);
     // Error message state
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const [showLoginLink, setShowLoginLink] = useState<boolean>(false);
+
     
     // function for tfa input - automatically verify when 6 digits entered
         React.useEffect(() => {
@@ -23,14 +28,16 @@ export default function TfaVerifyPage() {
 
     // Verify TFA code function
     async function verifyTfaCode() {
-        const token = localStorage.getItem('token');
-
+        // Disable OTP input while verifying
+        setOtpDisabled(true);
+        // todo verify token not expired and refresh if needed
+  
         try {
             const verifyTfaResponse =  await fetch('/api/authentication/tfa/validate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": `Bearer ${localStorage.getItem('token') || ''}`,
                 },
                 body: JSON.stringify({ tfaCode: otp }),
             });
@@ -41,40 +48,50 @@ export default function TfaVerifyPage() {
                 if(data.success && data.authenticated){
                 
                     // TFA verified successfully
-                    console.log('TFA verification successful');
                     // Save the tokens to local storage
                     
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('refreshToken', data.refreshToken);
-                    console.log('Token stored in local storage after TFA verification');
                     // Redirect to secure landing page
-                    window.location.href = '/scenarios/secure-landing';
+                    router.push('/scenarios/secure-landing');
                 }
                 else {
                     // TFA verification failed
                     setErrorMessage('Invalid code. Please try again.');
-                }
-                
-               
-            } else {
+                    // Clear the OTP input
+                    setOtp('');
+                }  
+            }
+            else if (verifyTfaResponse.status === 401) {
+                // Unauthorized - likely invalid or expired token
+                setErrorMessage('Your session has expired.');
+                setShowLoginLink(true);
+            }    
+            else {
                 // TFA verification failed
                 setErrorMessage('An error occurred during verification. Please try again.');
             }
         } catch (error) {
             setErrorMessage('An error occurred during verification. Please try again.');
         }
+        finally {   
+            // Enable OTP input again
+            setOtpDisabled(false);
+        }
     }
 
     return (
-        <div>
-            <div className="flex flex-col items-center mt-6">
-                <h4>Enter the code from your authenticator app to verify your identity.</h4>
-            </div>
-            <div className="flex flex-col items-center gap-4 mt-3">
+        <div className="grid grid-rows-[60px_auto_1fr] gap-6 min-h-dvh justify-center">
+            <div className="flex flex-col gap-2 w-80 sm:w-140 justify-self-center p-3 w-fit ">
+                <div className="flex flex-col items-center mt-6 text-center">
+                    <p>Enter the code from your authenticator app to verify your identity.</p>
+                </div>
+                <div className="flex flex-col items-center gap-4 mt-3">
                 <InputOTP 
                     maxLength={6} 
                     pattern={REGEXP_ONLY_DIGITS}
                     value={otp}
+                    disabled={otpDisabled}
                     onChange={setOtp}>
                         <InputOTPGroup>
                             <InputOTPSlot index={0}/>
@@ -88,20 +105,27 @@ export default function TfaVerifyPage() {
                             <InputOTPSlot index={5}/>
                         </InputOTPGroup>
                 </InputOTP> 
-            </div>
-            <div className="flex flex-col items-center mt-3"
-                 data-testid="tfa-verify-otp-error-message">
-                {errorMessage}
-            </div>
-            <div className="flex flex-col items-center mt-3">
-                <Link href = "scenarios/login" passHref className="w-full sm:w-1/2 mt-4">
+                </div>
+                <div className="flex flex-col items-center mt-3 errorMessage" 
+                    data-testid="tfa-verify-otp-error-message">
+                    <p>{errorMessage}</p>
+                    {showLoginLink && (
+                        <Link href="/scenarios/login" className="hover:underline mt-2 cursor-pointer">
+                            Please log in again.
+                        </Link>
+                    )}
+                </div>
+                <div className="flex flex-col items-center mt-3">
+                <Link href="/scenarios/login" className="w-full sm:w-1/2 mt-4">
                     <Button
                         variant="outline"
                         className="w-full"
                         >Cancel
                     </Button>
                 </Link>
+                </div>
             </div>
+  
         </div>
 
     );

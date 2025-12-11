@@ -10,6 +10,7 @@ import Link from "next/link";
 import { Spinner } from "@/components/ui/spinner"
 import { useRouter } from 'next/navigation';
 
+
 export default function Login() {
     // Router
     const router = useRouter();
@@ -23,12 +24,14 @@ export default function Login() {
     const [password, setPassword] = useState<string>('');
     const [passwordError, setPasswordError] = useState<string>('');
     const [passwordTouched, setPasswordTouched] = useState<boolean>(false);
+    const [tfaEnabled, setTfaEnabled] = useState<boolean>(false);
 
     //Submit state
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     // Login error state
     const [loginError, setLoginError] = useState<string>('');
+
 
     //Validation functions
 
@@ -99,37 +102,52 @@ export default function Login() {
             password: password
         };
         
-        let result = await fetch(`/api/authentication/login`, {
+        let response = await fetch(`/api/authentication/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(payload),
-        })
-        .then(response => response.json()) 
-        if(!result.ok){
+        });
+        
+        if(!response.ok){
+            console.log("Login request failed with status:", response.status);
             // Handle error response if not 200 OK
             setLoginError('Unexpected error. Please try again.');
             return;
         }
+        
+        let result = await response.json();
+        
         // Check response is successful
         if (result.success && result.token !== null) {
+            // Store tfaEnabled state
+            setTfaEnabled(result.tfaEnabled === true);
+
             // Handle successful login
             console.log('Login successful:', result);
             if(result.token !== null){
                 // Store token in local storage
                 localStorage.setItem('token', result.token);
-                console.log('Token stored in local storage');
+            }
+            // Store refresh token if provided
+            if(result.refreshToken !== null){
+                localStorage.setItem('refreshToken', result.refreshToken);
             }
             // Navigate based on response flags
             if(result.tempPassword === true){
                 // Redirect to password change page
-                router.push('/scenarios/change-password');
+                router.push('/scenarios/password-reset?tempPassword=true&tfaEnabled=' + (result.tfaEnabled === true));
             }
             if(result.tfaEnabled === true){
                 // Redirect to TFA verification page
                 router.push('/scenarios/tfa-verify');
-            }    
+            }
+            else {
+                // Redirect to secure landing page
+                router.push('/scenarios/secure-landing');
+            }
+
         }
         else {
             // Handle login failure
@@ -139,8 +157,9 @@ export default function Login() {
         
     }
 
+
     return (
-        <div>
+        <div className="grid grid-rows-[60px_auto_1fr] gap-6 min-h-dvh justify-center">
             
             <div className="flex order-2  flex flex-col justify-self-center p-3 w-fit">
                 <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-2 w-80 sm:w-140">
@@ -226,6 +245,14 @@ export default function Login() {
                             className="w-full mt-4 justify-start text-base text-(--text-color)"
                             onClick={() => router.push('/scenarios/register')}
                             >Don't have an account? Register</Button>
+                        </Field>
+                        <Field>
+                            <Button 
+                            type="button"
+                            variant="link" 
+                            className="w-full justify-start text-base text-(--text-color)"
+                            onClick={() => router.push('/scenarios/forgot-password')}
+                            >Forgot your password? Reset it</Button>
                         </Field>
                     </FieldSet>
                 </form>
