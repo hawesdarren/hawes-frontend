@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from "react";;
+import { useState, useMemo, Suspense } from "react";;
 import {Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel,
         FieldLegend, FieldSeparator, FieldSet, FieldTitle, } from "@/components/ui/field"
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from "react";
 
-export default function PasswordReset() {
+function PasswordResetContent() {
     // Router
     const router = useRouter();
     const search = useSearchParams();
@@ -199,5 +199,13 @@ export default function PasswordReset() {
                 
             </div>
         </div>
+    );
+}
+
+export default function PasswordReset() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <PasswordResetContent />
+        </Suspense>
     );
 }
