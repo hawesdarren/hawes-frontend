@@ -112,6 +112,10 @@ export function clearTokens(){
     localStorage.removeItem('refreshToken');
 }
 
+export async function setTempPassword(){
+    // Placeholder function for setting a temporary password
+}
+
 
 
   
