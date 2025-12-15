@@ -20,15 +20,6 @@ function PasswordResetContent() {
         return search.get('tempPassword') === 'true';
     }, [search]);
 
-    // Get tfaEnabled flag from query parameters
-    const isTfaEnabled = useMemo(() => {
-        return search.get('tfaEnabled') === 'true';
-    }, [search]);
-
-    // Get changePassword flag from query parameters
-    const isChangePassword = useMemo(() => {
-        return search.get('changePassword') === 'true';
-    }, [search]);
 
     // New password state
     const [newPassword, setNewPassword] = useState<string>('');
@@ -97,13 +88,12 @@ function PasswordResetContent() {
                     setPasswordResetError(payload.error);
                     return;
                 }
-                // If temp password and tfa enabled, redirect to tfa verify
-                if(isTempPassword && isTfaEnabled){
-                    router.push('/scenarios/tfa-verify');
+                else {
+                    // Route to secure landing page after successful password reset
+                    router.push('/scenarios/secure-landing');
                     return;
                 }
-                // Password reset successful, redirect to secure landing page
-                router.push('/scenarios/secure-landing');
+
             }
         } catch (error) {
             console.error('Password reset error:', error);
