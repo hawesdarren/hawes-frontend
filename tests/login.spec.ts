@@ -38,6 +38,7 @@ test.describe('Login Page Tests', () => {
 
     test('Email format validation works', async ({ page }) => {
         // Enter invalid email format
+        await loginPage.emailInput.click();
         await loginPage.emailInput.fill('invalid-email');
         // Move focus to password field to trigger validation
         await loginPage.passwordInput.click();
@@ -71,7 +72,9 @@ test.describe('Login Page Tests', () => {
         await page.goto('scenarios/login');
 
         // Enter invalid credentials
+        await loginPage.emailInput.click();
         await loginPage.emailInput.fill('valid@example.com');
+        await loginPage.passwordInput.click();
         await loginPage.passwordInput.fill('wrongpassword');
         await loginPage.loginButton.click();
 
@@ -105,7 +108,9 @@ test.describe('Login Page Tests', () => {
         await page.goto('scenarios/login');
 
         // Enter invalid credentials
+        await loginPage.emailInput.click();
         await loginPage.emailInput.fill('invalid@example.com');
+        await loginPage.passwordInput.click();
         await loginPage.passwordInput.fill('password');
         await loginPage.loginButton.click();
 
@@ -140,7 +145,9 @@ test.describe('Login Page Tests', () => {
         await page.goto('scenarios/login');
 
         // Enter invalid credentials
+        await loginPage.emailInput.click();
         await loginPage.emailInput.fill('invalid@example.com');
+        await loginPage.passwordInput.click();
         await loginPage.passwordInput.fill('password');
         await loginPage.loginButton.click();
 
@@ -174,7 +181,9 @@ test.describe('Login Page Tests', () => {
         await page.goto('scenarios/login');
 
         // Enter invalid credentials
+        await loginPage.emailInput.click();
         await loginPage.emailInput.fill('invalid@example.com');
+        await loginPage.passwordInput.click();
         await loginPage.passwordInput.fill('password');
         await loginPage.loginButton.click();
 
@@ -209,7 +218,10 @@ test.describe('Login Page Tests', () => {
         await page.goto('scenarios/login');
 
         // Enter invalid credentials
+        
+        await loginPage.emailInput.click();
         await loginPage.emailInput.fill('valid@example.com');
+        await loginPage.passwordInput.click();
         await loginPage.passwordInput.fill('password');
         await loginPage.loginButton.click();
 
@@ -242,7 +254,9 @@ test.describe('Login Page Tests', () => {
         await page.goto('scenarios/login');
 
         // Enter invalid credentials
+        await loginPage.emailInput.click();
         await loginPage.emailInput.fill('valid@example.com');
+        await loginPage.passwordInput.click();
         await loginPage.passwordInput.fill('password');
         await loginPage.loginButton.click();
 
@@ -275,7 +289,9 @@ test.describe('Login Page Tests', () => {
         await page.goto('scenarios/login');
 
         // Enter invalid credentials
+        await loginPage.emailInput.click();
         await loginPage.emailInput.fill('valid@example.com');
+        await loginPage.passwordInput.click();
         await loginPage.passwordInput.fill('password');
         await loginPage.loginButton.click();
 
