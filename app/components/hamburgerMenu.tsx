@@ -9,7 +9,6 @@ export default function HamburgerMenu() {
 
     const menuItems = [
 
-        { name: 'Register', href: '/register' },
         { name: 'Accordion', href: '/public/accordion' },
         { name: 'Broken links', href: '/public/broken-links' },
         { name: 'Radio buttons', href: '/public/radio-buttons' },

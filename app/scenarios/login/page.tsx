@@ -134,22 +134,44 @@ export default function Login() {
             if(result.refreshToken !== null){
                 localStorage.setItem('refreshToken', result.refreshToken);
             }
-            // Navigate based on response flags
+            
+            // Check if TFA is enabled first - user must complete TFA before password reset
+            if(result.tfaEnabled === true){
+                // Redirect to TFA verification page with tempPassword flag
+                router.push('/scenarios/tfa-verify?tempPassword=' + (result.tempPassword === true));
+                return;
+            }
+            
+            // If no TFA, check if temp password needs reset
             if(result.tempPassword === true){
                 // Redirect to password change page
-                router.push('/scenarios/password-reset?tempPassword=true&tfaEnabled=' + (result.tfaEnabled === true));
+                console.log("Redirecting to password reset page");
+                router.push('/scenarios/password-reset?tempPassword=true');
+                return;
             }
-            if(result.tfaEnabled === true){
-                // Redirect to TFA verification page
-                router.push('/scenarios/tfa-verify');
-            }
-            else {
-                // Redirect to secure landing page
-                router.push('/scenarios/secure-landing');
-            }
+            
+            // Otherwise go to secure landing
+            router.push('/scenarios/secure-landing');
+            return;
 
         }
         else {
+            if(result.error === 'INVALID_EMAIL'){
+                setLoginError('Please enter a valid email address.');
+                return;
+            }
+            else if(result.error === 'INVALID'){
+                setLoginError('Invalid email or password. Please try again.');
+                return;
+            }
+            else if(result.error === 'PASSWORD_TEMP_BLOCK'){
+                setLoginError('Your password is temporarily blocked. Please try again latter.');
+                return;
+            }
+            else if(result.error === 'TEMP_PASSWORD_EXPIRED'){
+                setLoginError('Your temporarly password has expired. Use the forgot password link to reset it.');
+                return;
+            }
             // Handle login failure
             console.log('Login failed:', result.message);
             setLoginError('Invalid email or password. Please try again.');
@@ -181,7 +203,7 @@ export default function Login() {
                                     />
                                 </div>
                                 {emailError && (
-                                    <FieldError id="email-error">{emailError}</FieldError>
+                                    <FieldError id="email-error" data-testid="email-error">{emailError}</FieldError>
                                 )}
                             </Field>
                             
@@ -202,13 +224,13 @@ export default function Login() {
                                 />
                                 </div>
                                 {passwordError && (
-                                    <FieldError id="password-error">{passwordError}</FieldError>
+                                    <FieldError id="password-error" data-testid="password-error">{passwordError}</FieldError>
                                 )}    
                             </Field>
                             
                         </FieldGroup>
                         <FieldSeparator />
-                        <FieldError>
+                        <FieldError id="login-error" data-testid="login-error">
                             {loginError}
                         </FieldError>
                         

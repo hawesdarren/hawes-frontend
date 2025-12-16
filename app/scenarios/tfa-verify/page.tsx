@@ -4,13 +4,15 @@ import { Button } from "@/components/ui/button";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function TfaVerifyPage() {
     // Router 
     const router = useRouter();
+    // Search
+    const search = useSearchParams();
     // OTP value and state
     const [otp, setOtp] = useState('');
     const [otpDisabled, setOtpDisabled] = useState<boolean>(false);
@@ -18,6 +20,10 @@ export default function TfaVerifyPage() {
     const [errorMessage, setErrorMessage] = useState<string>('');
     const [showLoginLink, setShowLoginLink] = useState<boolean>(false);
 
+    // Get tempPassword flag from query parameters
+    const isTempPassword = useMemo(() => {
+        return search.get('tempPassword') === 'true';
+    }, [search]);
     
     // function for tfa input - automatically verify when 6 digits entered
         React.useEffect(() => {
@@ -52,8 +58,16 @@ export default function TfaVerifyPage() {
                     
                     localStorage.setItem('token', data.token);
                     localStorage.setItem('refreshToken', data.refreshToken);
-                    // Redirect to secure landing page
-                    router.push('/scenarios/secure-landing');
+                    if(isTempPassword){
+                        // Redirect to password reset page
+                        router.push('/scenarios/password-reset?tempPassword=true');
+                        return;
+                    }
+                    else {
+                        // Redirect to secure landing page
+                        router.push('/scenarios/secure-landing');
+                        return;
+                    }
                 }
                 else {
                     // TFA verification failed

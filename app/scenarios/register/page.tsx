@@ -145,6 +145,31 @@ export default function Register() {
       // Show  error message
       console.error("Registration failed:", data.error);
       // Map error messages to user-friendly messages if needed
+      if(data.error === 'PASSWORDS_DONT_MATCH'){
+        setConfirmPasswordError("Passwords do not match.");
+        return;
+      }
+      else if(data.error === 'EMAIL_ALREADY_REGISTERED'){
+        setEmailError("This email address is already registered. Please try logging in or use a different email.");
+        return;
+      }
+      else if(data.error === 'INVALID_EMAIL'){
+        setEmailError("Please enter a valid email address.");
+        return;
+      }
+      if(data.error === 'PASSWORD_COMPLEXITY'){
+        setPasswordError("Password must be at least 7 characters, contain 1 upper case character and 1 number.");
+        return;
+      }
+      else if(data.error === 'COMMON_PASSWORD'){
+        setPasswordError("This password is too common and easy to guess. Please choose a more secure password.");
+        return;
+      }
+      else if(data.error === 'PASSWORDS_DONT_MATCH'){
+        setConfirmPasswordError("Passwords do not match.");
+        return;
+      }
+      
       let userErrorMessage = getErrorMessage(data.error);
       setRegistrationError(userErrorMessage || "Registration failed. Please try again.");
     }
@@ -191,6 +216,7 @@ export default function Register() {
                     <FieldLabel htmlFor="email" className="sm:min-w-36 sm:max-w-48">Email</FieldLabel>
                     <Input 
                       id="email" 
+                      data-testid="email"
                       type="email" 
                       className="sm:flex-1" 
                       placeholder="Enter your email" 
@@ -198,13 +224,14 @@ export default function Register() {
                       onChange={handleEmailChange} 
                       onBlur={handleEmailBlur} />
                   </div>    
-                  {emailTouched && emailError && <FieldError>{emailError}</FieldError>}
+                  {emailTouched && emailError && <FieldError id="email-error" data-testid="email-error">{emailError}</FieldError>}
                 </Field>
                 <Field>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">                
                     <FieldLabel htmlFor="password" className="sm:min-w-36 sm:max-w-48">Password</FieldLabel>
                     <Input 
                       id="password" 
+                      data-testid="password"
                       type="password" 
                       value={password} 
                       onChange={handlePasswordChange}
@@ -212,7 +239,7 @@ export default function Register() {
                       className="sm:flex-1" 
                       placeholder="Enter password" />
                   </div>
-                  {passwordTouched && passwordError && <FieldError>{passwordError}</FieldError>}
+                  {passwordTouched && passwordError && <FieldError id="password-error" data-testid="password-error">{passwordError}</FieldError>}
                 </Field>
        
                 <Field>
@@ -220,6 +247,7 @@ export default function Register() {
                     <FieldLabel htmlFor="confirmPassword" className="sm:min-w-36 sm:max-w-48">Confirm Password</FieldLabel>
                     <Input 
                       id="confirmPassword" 
+                      data-testid="confirmPassword"
                       type="password" 
                       className="sm:flex-1" 
                       placeholder="Confirm password" 
@@ -229,13 +257,16 @@ export default function Register() {
                     </div>
                   
                 </Field>
-                {confirmPasswordTouched && confirmPasswordError && <FieldError>{confirmPasswordError}</FieldError>}
+                {confirmPasswordTouched && confirmPasswordError && <FieldError id="confirm-password-error" data-testid="confirm-password-error">{confirmPasswordError}</FieldError>}
                 <FieldSeparator />
-                <div>{registrationError && <FieldError>{registrationError}</FieldError>}</div>
+                <div>{registrationError && <FieldError id="registration-error" data-testid="registration-error">{registrationError}</FieldError>}</div>
                 <Field>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
                     <Button 
                     type="submit" 
+                    id='register-button'
+                    data-testid="register-button"
+                    variant="default"
                     disabled={isSubmitting}
                     className="w-full sm:w-1/2 mt-4 "
                     onClick={handleSubmit}
@@ -245,6 +276,8 @@ export default function Register() {
                     <Link href="/" passHref className="w-full sm:w-1/2 mt-4 ">
                     <Button 
                       type="button" 
+                      id="cancel-button"
+                      data-testid="cancel-button"
                       variant="outline"
                       className="w-full"
                     >
@@ -256,6 +289,8 @@ export default function Register() {
                 <Field>
                   <Button 
                     type="button"
+                    id="login-link"
+                    data-testid="login-link"
                     variant="link" 
                     className="w-full mt-4 justify-start text-base text-(--text-color)"
                     onClick={() => router.push('/scenarios/login')}
