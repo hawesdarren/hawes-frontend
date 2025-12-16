@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo, Suspense } from "react";;
+import { useState,  Suspense } from "react";;
 import {Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel,
         FieldLegend, FieldSeparator, FieldSet, FieldTitle, } from "@/components/ui/field"
 import { Input } from "@/components/ui/input";
@@ -14,12 +14,6 @@ function PasswordResetContent() {
     // Router
     const router = useRouter();
     const search = useSearchParams();
-
-    // Get tempPassword flag from query parameters
-    const isTempPassword = useMemo(() => {
-        return search.get('tempPassword') === 'true';
-    }, [search]);
-
 
     // New password state
     const [newPassword, setNewPassword] = useState<string>('');
