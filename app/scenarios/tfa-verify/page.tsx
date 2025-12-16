@@ -60,7 +60,7 @@ export default function TfaVerifyPage() {
                     localStorage.setItem('refreshToken', data.refreshToken);
                     if(isTempPassword){
                         // Redirect to password reset page
-                        router.push('/scenarios/password-reset?tempPassword=true');
+                        router.push('/scenarios/password-reset');
                         return;
                     }
                     else {
@@ -102,6 +102,8 @@ export default function TfaVerifyPage() {
                 </div>
                 <div className="flex flex-col items-center gap-4 mt-3">
                 <InputOTP 
+                    id="otp-input"
+                    data-testid="otp-input"
                     maxLength={6} 
                     pattern={REGEXP_ONLY_DIGITS}
                     value={otp}
@@ -121,10 +123,13 @@ export default function TfaVerifyPage() {
                 </InputOTP> 
                 </div>
                 <div className="flex flex-col items-center mt-3 errorMessage" 
-                    data-testid="tfa-verify-otp-error-message">
+                    data-testid="tfa-verify-otp-error-message" id="tfa-verify-otp-error-message">
                     <p>{errorMessage}</p>
                     {showLoginLink && (
-                        <Link href="/scenarios/login" className="hover:underline mt-2 cursor-pointer">
+                        <Link href="/scenarios/login" 
+                              className="hover:underline mt-2 cursor-pointer"
+                              id="login-again-link"
+                              data-testid="login-again-link">
                             Please log in again.
                         </Link>
                     )}
@@ -134,6 +139,8 @@ export default function TfaVerifyPage() {
                     <Button
                         variant="outline"
                         className="w-full"
+                        id="cancel-button"
+                        data-testid="cancel-button"
                         >Cancel
                     </Button>
                 </Link>
