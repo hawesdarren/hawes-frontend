@@ -87,7 +87,13 @@ export default function TwoFactorRegistration() {
         });
         if(!result.ok){
             // Handle error response
-            setErrorMessage('Unexpected error. Please try again.');
+            if(result.status === 401){
+                setErrorMessage('Your session has expired., Please login again and setup TFA.');
+            }
+            else {
+                setErrorMessage('Unexpected error. Please try again.');
+            }
+            
             // Clear OTP input
             setOtp('');
             return;
@@ -145,9 +151,15 @@ export default function TwoFactorRegistration() {
                         <Field>
                             <div className="flex justify-center">
                                 {isLoadingQr || !qrCodeUrl ? (
-                                    <Skeleton className="w-48 h-48"/>
+                                    <Skeleton 
+                                        className="w-48 h-48"
+                                        id="tfa-setup-qr-skeleton"
+                                        data-testid="tfa-setup-qr-skeleton"
+                                        />
                                 ) : (
-                                    <div className="w-48 h-48">
+                                    <div className="w-48 h-48"
+                                         id="tfa-setup-qr-image"
+                                         data-testid="tfa-setup-qr-image">
                                         <Image
                                             text={qrCodeUrl}
                                             options={{
@@ -165,7 +177,7 @@ export default function TwoFactorRegistration() {
                             </div>
                         </Field>
                         <FieldError>
-                            <div className="text-center" data-testid="qr-image-error">
+                            <div className="text-center" data-testid="qr-image-error" id="qr-image-error">
                                 {qrImageErrorMessage}
                             </div>
                         </FieldError>
@@ -176,6 +188,8 @@ export default function TwoFactorRegistration() {
                                 <Button
                                     variant="default"
                                     className="w-full sm:w-1/2"
+                                    id="copy-qr-key-button"
+                                    data-testid="copy-qr-key-button"
                                     onClick={copyToClipboard}
                                     >
                                         Copy the QR key to clipboard
@@ -188,6 +202,8 @@ export default function TwoFactorRegistration() {
                                         <div>
                                             <InputOTP 
                                             maxLength={6} 
+                                            id="tfa-setup-otp-input"
+                                            data-testid="tfa-setup-otp-input"
                                             pattern={REGEXP_ONLY_DIGITS}
                                             value={otp}
                                             onChange={setOtp}>
@@ -207,7 +223,7 @@ export default function TwoFactorRegistration() {
                             </div>
                         </Field>
                         <FieldError>
-                            <div className="text-center " data-testid="error-message">
+                            <div className="text-center " data-testid="error-message" id="error-message">
                                 {errorMessage}
                             </div>
                         </FieldError>
@@ -215,6 +231,8 @@ export default function TwoFactorRegistration() {
                             <div className="flex justify-center">
                                 <Button 
                                     variant="default"
+                                    id="tfa-setup-no-tfa-login-button"
+                                    data-testid="tfa-setup-no-tfa-login-button"
                                     className="w-full sm:w-1/2"
                                     onClick={() => router.push('/scenarios/login')}>
                                     I don't want TFA, Login</Button>
@@ -222,9 +240,6 @@ export default function TwoFactorRegistration() {
                         </Field>
                     </FieldGroup>
                 </FieldSet>
-                <div className="mt-3 text-center">
-                    <p id="error-message" data-testid="error-message">{errorMessage}</p>
-                </div>
                 </div>
             </div>
         </div>

@@ -49,13 +49,13 @@ test.describe('Login Page Tests', () => {
     test('Mocked invalid login shows error message', async ({ page }) => {
         // Setup payload for mocked response
         const invalidLoginPayload = {
-            tempPassword: 'false',
+            tempPassword: false,
             token: null,
             refreshToken: null,
             expiry: null,
-            tfaEnabled: 'false',
-            success: 'false',
-            authenticated: 'false',
+            tfaEnabled: false,
+            success: false,
+            authenticated: false,
             error: 'INVALID'
         };
         // Setup Mocked response for invalid login
@@ -83,13 +83,13 @@ test.describe('Login Page Tests', () => {
     test('Mocked invalid email format shows error message', async ({ page }) => {
         // Setup payload for mocked response
         const invalidLoginPayload = {
-            tempPassword: 'false',
+            tempPassword: false,
             token: null,
             refreshToken: null,
             expiry: null,
-            tfaEnabled: 'false',
-            success: 'false',
-            authenticated: 'false',
+            tfaEnabled: false,
+            success: false,
+            authenticated: false,
             error: 'INVALID_EMAIL'
         };
         // Setup Mocked response for invalid login
@@ -118,13 +118,13 @@ test.describe('Login Page Tests', () => {
     test('Mocked password temporary block shows error message', async ({ page }) => {
         // Setup payload for mocked response
         const invalidLoginPayload = {
-            tempPassword: 'false',
+            tempPassword: false,
             token: null,
             refreshToken: null,
             expiry: null,
-            tfaEnabled: 'false',
-            success: 'false',
-            authenticated: 'false',
+            tfaEnabled: false,
+            success: false,
+            authenticated: false,
             error: 'PASSWORD_TEMP_BLOCK'
         };
         // Setup Mocked response for invalid login
@@ -152,13 +152,13 @@ test.describe('Login Page Tests', () => {
         test('Mocked temporary password expired shows error message', async ({ page }) => {
         // Setup payload for mocked response
         const invalidLoginPayload = {
-            tempPassword: 'true',
+            tempPassword: true,
             token: null,
             refreshToken: null,
             expiry: null,
-            tfaEnabled: 'false',
-            success: 'false',
-            authenticated: 'false',
+            tfaEnabled: false,
+            success: false,
+            authenticated: false,
             error: 'TEMP_PASSWORD_EXPIRED'
         };
         // Setup Mocked response for invalid login
@@ -187,13 +187,13 @@ test.describe('Login Page Tests', () => {
         test('Mocked temporary password and tfa disabled redirected to reset password page', async ({ page }) => {
         // Setup payload for mocked response
         const loginPayload = {
-            tempPassword: 'true',
+            tempPassword: true,
             token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6IlRydWUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzb21lb25lQHNvbWV3aGVyZS5jby5ueiIsImV4cCI6MTc2NTc1MjQyNCwiaXNzIjoidGVzdC5oYXdlcy5jby5ueiIsImF1ZCI6InRlc3QuaGF3ZXMuY28ubnoifQ.90RaQNuXvRdMv-puRAqSLMEybT2toIVi2EXwaf1XceQ',
             refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6IlRydWUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzb21lb25lQHNvbWV3aGVyZS5jby5ueiIsImV4cCI6MTc2NTc4NzgyNCwiaXNzIjoidGVzdC5oYXdlcy5jby5ueiIsImF1ZCI6InRlc3QuaGF3ZXMuY28ubnoifQ.dzaTukrXDXfnX7saNQ3j-yWH4_J_D1kfVN6FV2SPzXo',
-            expiry: 1665752424,
-            tfaEnabled: 'false',
-            success: 'true',
-            authenticated: 'false',
+            expiry: 1765752424,
+            tfaEnabled: false,
+            success: true,
+            authenticated: true,
   
         };
         // Setup Mocked response for invalid login
@@ -215,6 +215,72 @@ test.describe('Login Page Tests', () => {
 
         // Expect user redirected to reset password page
         await expect(page).toHaveURL(/.*scenarios\/password-reset.*/);
+    });
+
+     test('Mocked temporary password and tfa enabled redirected to tfa verify', async ({ page }) => {
+        // Setup payload for mocked response
+        const loginPayload = {
+            tempPassword: true,
+            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6IlRydWUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzb21lb25lQHNvbWV3aGVyZS5jby5ueiIsImV4cCI6MTc2NTc1MjQyNCwiaXNzIjoidGVzdC5oYXdlcy5jby5ueiIsImF1ZCI6InRlc3QuaGF3ZXMuY28ubnoifQ.90RaQNuXvRdMv-puRAqSLMEybT2toIVi2EXwaf1XceQ',
+            refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6IlRydWUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzb21lb25lQHNvbWV3aGVyZS5jby5ueiIsImV4cCI6MTc2NTc4NzgyNCwiaXNzIjoidGVzdC5oYXdlcy5jby5ueiIsImF1ZCI6InRlc3QuaGF3ZXMuY28ubnoifQ.dzaTukrXDXfnX7saNQ3j-yWH4_J_D1kfVN6FV2SPzXo',
+            expiry: 1765752424,
+            tfaEnabled: true,
+            success: true,
+            authenticated: false,
+  
+        };
+        // Setup Mocked response for invalid login
+        await page.route('/api/authentication/login', route => {
+            route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: JSON.stringify(loginPayload),
+            });
+        });
+
+        // Load the login page
+        await page.goto('scenarios/login');
+
+        // Enter invalid credentials
+        await loginPage.emailInput.fill('valid@example.com');
+        await loginPage.passwordInput.fill('password');
+        await loginPage.loginButton.click();
+
+        // Expect user redirected to reset password page
+        await expect(page).toHaveURL(/.*scenarios\/tfa-verify.*/);
+    });
+
+    test('Mocked valid login tfa enabled', async ({ page }) => {
+        // Setup payload for mocked response
+        const loginPayload = {
+            tempPassword: false,
+            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6IlRydWUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzb21lb25lQHNvbWV3aGVyZS5jby5ueiIsImV4cCI6MTc2NTc1MjQyNCwiaXNzIjoidGVzdC5oYXdlcy5jby5ueiIsImF1ZCI6InRlc3QuaGF3ZXMuY28ubnoifQ.90RaQNuXvRdMv-puRAqSLMEybT2toIVi2EXwaf1XceQ',
+            refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9hdXRoZW50aWNhdGlvbiI6IlRydWUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJzb21lb25lQHNvbWV3aGVyZS5jby5ueiIsImV4cCI6MTc2NTc4NzgyNCwiaXNzIjoidGVzdC5oYXdlcy5jby5ueiIsImF1ZCI6InRlc3QuaGF3ZXMuY28ubnoifQ.dzaTukrXDXfnX7saNQ3j-yWH4_J_D1kfVN6FV2SPzXo',
+            expiry: 1765752424,
+            tfaEnabled: true,
+            success: true,
+            authenticated: false,
+  
+        };
+        // Setup Mocked response for invalid login
+        await page.route('/api/authentication/login', route => {
+            route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: JSON.stringify(loginPayload),
+            });
+        });
+
+        // Load the login page
+        await page.goto('scenarios/login');
+
+        // Enter invalid credentials
+        await loginPage.emailInput.fill('valid@example.com');
+        await loginPage.passwordInput.fill('password');
+        await loginPage.loginButton.click();
+
+        // Expect user redirected to reset password page
+        await expect(page).toHaveURL(/.*scenarios\/tfa-verify.*/);
     });
 
     });
