@@ -90,6 +90,8 @@ test.describe('TFA Verify Page Tests', () => {
         await page.goto('/scenarios/tfa-verify');
         // Enter valid OTP
         await tfaVerifyPage.otpInput.fill('654321');
+        //Mock secure landing page response
+        // todo mock token and refresh token storage
         // Verify redirection to secure landing page
         await expect(page).toHaveURL('/scenarios/secure-landing');
     });

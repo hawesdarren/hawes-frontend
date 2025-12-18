@@ -44,7 +44,7 @@ test.describe('TFA Setup Page Tests', () => {
         await expect(tfaSetupPage.header).toBeVisible();
         await expect(tfaSetupPage.qrSkeleton).toBeVisible();
         await expect(tfaSetupPage.qrImage).toBeHidden();
-        await expect(tfaSetupPage.qrImageError).toBeHidden();
+        await expect(tfaSetupPage.qrImageError).toBeVisible();
         await expect(tfaSetupPage.copyQrKeyButton).toBeVisible();
         await expect(tfaSetupPage.tfaSetupOtpInput).toBeVisible();
         await expect(tfaSetupPage.errorMessage).toBeHidden();
@@ -130,7 +130,7 @@ test.describe('TFA Setup Page Tests', () => {
         });
 
         // Enter TFA code
-        await tfaSetupPage.tfaSetupOtpInput.fill('123456');l
+        await tfaSetupPage.tfaSetupOtpInput.fill('123456');
 
         // Verify  error message displayed
         await expect(tfaSetupPage.errorMessage).toBeVisible();

@@ -71,8 +71,11 @@ test.describe('Register Page Tests', () => {
         await page.goto('/scenarios/register');
 
         // Fill in valid registration details
+        await registerPage.emailInput.click();
         await registerPage.emailInput.fill('valid@example.com');
+        await registerPage.passwordInput.click();
         await registerPage.passwordInput.fill('ValidPass1');
+        await registerPage.confirmPasswordInput.click();
         await registerPage.confirmPasswordInput.fill('ValidPass1');
 
         // Payload for the mocked successful registration response
@@ -103,8 +106,11 @@ test.describe('Register Page Tests', () => {
         await page.goto('/scenarios/register');
 
         // Fill in valid registration details
+        await registerPage.emailInput.click();
         await registerPage.emailInput.fill('valid@example.com');
+        await registerPage.passwordInput.click();
         await registerPage.passwordInput.fill('ValidPass1');
+        await registerPage.confirmPasswordInput.click();
         await registerPage.confirmPasswordInput.fill('ValidPass1');
 
         // Payload for the mocked successful registration response
@@ -137,8 +143,11 @@ test.describe('Register Page Tests', () => {
         await page.goto('/scenarios/register');
 
         // Fill in valid registration details
+        await registerPage.emailInput.click();
         await registerPage.emailInput.fill('valid@example.com');
+        await registerPage.passwordInput.click();
         await registerPage.passwordInput.fill('ValidPass1');
+        await registerPage.confirmPasswordInput.click();
         await registerPage.confirmPasswordInput.fill('ValidPass1');
 
         // Payload for the mocked successful registration response
@@ -171,8 +180,11 @@ test.describe('Register Page Tests', () => {
         await page.goto('/scenarios/register');
 
         // Fill in valid registration details
+        await registerPage.emailInput.click();
         await registerPage.emailInput.fill('valid@example.com');
+        await registerPage.passwordInput.click();
         await registerPage.passwordInput.fill('ValidPass1');
+        await registerPage.confirmPasswordInput.click();
         await registerPage.confirmPasswordInput.fill('ValidPass1');
 
         // Payload for the mocked successful registration response
@@ -205,8 +217,11 @@ test.describe('Register Page Tests', () => {
         await page.goto('/scenarios/register');
 
         // Fill in valid registration details
+        await registerPage.emailInput.click();
         await registerPage.emailInput.fill('valid@example.com');
+        await registerPage.passwordInput.click();
         await registerPage.passwordInput.fill('ValidPass1');
+        await registerPage.confirmPasswordInput.click();
         await registerPage.confirmPasswordInput.fill('ValidPass1');
 
         // Payload for the mocked successful registration response
@@ -239,8 +254,11 @@ test.describe('Register Page Tests', () => {
         await page.goto('/scenarios/register');
 
         // Fill in valid registration details
+        await registerPage.emailInput.click();
         await registerPage.emailInput.fill('valid@example.com');
+        await registerPage.passwordInput.click();
         await registerPage.passwordInput.fill('ValidPass1');
+        await registerPage.confirmPasswordInput.click();
         await registerPage.confirmPasswordInput.fill('ValidPass1');
 
         // Payload for the mocked successful registration response
