@@ -102,7 +102,11 @@ export default function TwoFactorRegistration() {
             const data = await result.json();
             // On Success enable TFA and nav to secure landing
             if(data.success){
-                router.push('/scenarios/login');
+                // Store tokens in local storage
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('refreshToken', data.refreshToken);
+                // Navigate to secure landing
+                router.push('/scenarios/secure-landing');
             }
             else {
                 console.log("TFA setup failed, please try again.");
@@ -234,8 +238,8 @@ export default function TwoFactorRegistration() {
                                     id="tfa-setup-no-tfa-login-button"
                                     data-testid="tfa-setup-no-tfa-login-button"
                                     className="w-full sm:w-1/2"
-                                    onClick={() => router.push('/scenarios/login')}>
-                                    I don't want TFA, Login</Button>
+                                    onClick={() => router.push('/scenarios/secure-landing')}>
+                                    I don't want TFA, Skip</Button>
                             </div>
                         </Field>
                     </FieldGroup>

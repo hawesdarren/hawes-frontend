@@ -90,8 +90,8 @@ test.describe('TFA Setup Page Tests', () => {
 
         // Verify no error message displayed
         await expect(tfaSetupPage.errorMessage).toBeHidden();
-        // Verify redirected to secure logged in page
-        await expect(page).toHaveURL('/scenarios/login');
+        // Verify redirected to secure landing page
+        await expect(page).toHaveURL('/scenarios/secure-landing');
     });
 
     test('Mocked - Invalid TFA code', async ({ page }) => {

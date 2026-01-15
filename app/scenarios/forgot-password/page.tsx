@@ -73,6 +73,8 @@ export default function ForgotPassword() {
 
         if (!response.ok) {
             setErrorMessage('An error occurred. Please try again.');
+            setIsSubmitting(false);
+            return;
         } 
 
         let result  = await response.json();

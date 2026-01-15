@@ -23,6 +23,7 @@ test.describe('Register Page Tests', () => {
         await page.goto('/scenarios/register');
 
         // Enter invalid email
+        await registerPage.emailInput.click();
         await registerPage.emailInput.fill('invalid-email-format');
         // Move focus to trigger validation
         await registerPage.passwordInput.click();
